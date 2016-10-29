@@ -72,7 +72,6 @@ object frmDBDemo: TfrmDBDemo
   end
   object Database1: TDatabase
     AliasName = 'DBDEMOS'
-    Connected = True
     DatabaseName = 'Database1'
     SessionName = 'Default'
     Left = 80

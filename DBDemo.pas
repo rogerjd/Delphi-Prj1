@@ -52,6 +52,7 @@ end;
 procedure TfrmDBDemo.Button3Click(Sender: TObject);
 begin
   ClientDataSet1.Open();
+  ShowMessage(BoolToStr(Database1.Connected));
 end;
 
 procedure TfrmDBDemo.Button4Click(Sender: TObject);

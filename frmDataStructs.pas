@@ -306,7 +306,8 @@ procedure TForm1.Button1Click(Sender: TObject);
   end;
 *)
 
-  //always use the available Result variable, (if possible), much faster
+  //always use the available Result variable, (if possible), much faster than
+  //  temp variable (see DelphiTools page, in Keep)
   function Reverse(s: string): string;
   var
     i: Integer;

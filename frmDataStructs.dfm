@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 97
-  Top = 148
+  Left = 233
+  Top = 143
   Width = 488
   Height = 281
   ActiveControl = btnList
