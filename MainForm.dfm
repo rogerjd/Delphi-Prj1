@@ -19,6 +19,10 @@ object frmMain: TfrmMain
     Top = 8
     object File1: TMenuItem
       Caption = 'File'
+      object mniForm: TMenuItem
+        Caption = 'Form'
+        OnClick = mniFormClick
+      end
       object Database1: TMenuItem
         Caption = '&Database'
         OnClick = Database1Click
@@ -26,9 +30,9 @@ object frmMain: TfrmMain
       object hreading1: TMenuItem
         Caption = '&Threading'
       end
-      object ListStrList1: TMenuItem
+      object DataStructs: TMenuItem
         Caption = 'DataStructs'
-        OnClick = ListStrList1Click
+        OnClick = DataStructsClick
       end
       object Interface1: TMenuItem
         Caption = 'Interface'

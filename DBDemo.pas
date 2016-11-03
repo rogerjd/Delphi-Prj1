@@ -17,15 +17,20 @@ type
     DataSetProvider1: TDataSetProvider;
     Button1: TButton;
     Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
+    btnOpenTbl: TButton;
+    btnCloseTbl: TButton;
     GroupBox1: TGroupBox;
+    edtFilterTbl: TEdit;
+    btnFilterTbl: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
+    procedure btnOpenTblClick(Sender: TObject);
+    procedure btnCloseTblClick(Sender: TObject);
+    procedure btnFilterTblClick(Sender: TObject);
   private
     { Private declarations }
+    procedure SetTblFilter();
+    procedure ToggleButtons();
   public
     { Public declarations }
   end;
@@ -49,15 +54,41 @@ begin
   mr := MessageDlg('test', mtInformation, [mbOk], 0);
 end;
 
-procedure TfrmDBDemo.Button3Click(Sender: TObject);
+procedure TfrmDBDemo.btnOpenTblClick(Sender: TObject);
 begin
+  btnOpenTbl.Enabled := False;
+  SetTblFilter();
   ClientDataSet1.Open();
   ShowMessage(BoolToStr(Database1.Connected));
+  btnCloseTbl.Enabled := True;
 end;
 
-procedure TfrmDBDemo.Button4Click(Sender: TObject);
+procedure TfrmDBDemo.btnCloseTblClick(Sender: TObject);
 begin
+  btnCloseTbl.Enabled := False;
   ClientDataSet1.Close();
+  btnOpenTbl.Enabled := True;
+end;
+
+procedure TfrmDBDemo.btnFilterTblClick(Sender: TObject);
+begin
+  ClientDataSet1.Close(); //must close, for new filter
+  SetTblFilter();
+  ClientDataSet1.Open();
+(*
+  ShowMessage(BoolToStr(Query1.Active));
+  ShowMessage(BoolToStr(Database1.Connected));
+*)
+end;
+
+procedure TfrmDBDemo.SetTblFilter;
+begin
+  Query1.Params[0].Value := edtFilterTbl.Text + '%';
+end;
+
+procedure TfrmDBDemo.ToggleButtons;
+begin
+
 end;
 
 end.
