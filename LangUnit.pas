@@ -27,6 +27,8 @@ type
 var
   colors: set of TMyEnum; 
 
+//TODO: more  
+
 procedure CaseTst();
 var
   me: TMyEnum;

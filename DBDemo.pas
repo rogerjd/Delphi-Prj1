@@ -52,6 +52,7 @@ type
     procedure btnEmpSkillClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSkillEmpsClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     procedure SetTblFilter(tbl: string);
@@ -134,7 +135,7 @@ procedure TfrmDBDemo.Button3Click(Sender: TObject);
 begin
   ShowMessage(cdsEmps.FieldByName('EmpNo').Value);
 end;
-
+//todo: put emp name in lbl, above the skills
 procedure TfrmDBDemo.btnEmpSkillClick(Sender: TObject);
 begin
   qryEmpSkill.SQL.Clear();
@@ -146,9 +147,12 @@ end;
 
 procedure TfrmDBDemo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Database1.Connected := False;
+//  Database1.Connected := False;
+  cdsEmps.Close();
+  cdsSkills.Close();
+  cdsEmpSkill.Close();
 end;
-
+//todo: put label w/skill above emps
 procedure TfrmDBDemo.btnSkillEmpsClick(Sender: TObject);
 begin
   qryEmpSkill.SQL.Clear();
@@ -156,6 +160,14 @@ begin
   qryEmpSkill.SQL.Add('select LastName from employee e, EmpSkills s where (s.SkillID = :sid) and e.EmpNo = s.EmpID');
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
+end;
+//TODO:
+procedure TfrmDBDemo.FormCreate(Sender: TObject);
+begin
+  SetTblFilter('emp');
+  SetTblFilter('skill');  
+  cdsEmps.Open();
+  cdsSkills.Open();
 end;
 
 end.
