@@ -215,6 +215,7 @@ object frmDBDemo: TfrmDBDemo
       Caption = 'Delete'
       Enabled = False
       TabOrder = 0
+      OnClick = btnDelEmpSkillClick
     end
     object btnAddEmpSkill: TButton
       Left = 31
@@ -326,6 +327,7 @@ object frmDBDemo: TfrmDBDemo
     Constraints = True
     UpdateMode = upWhereKeyOnly
     OnUpdateData = dspEmpSkillUpdateData
+    OnGetTableName = dspEmpSkillGetTableName
     Left = 400
     Top = 8
   end

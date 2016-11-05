@@ -62,6 +62,9 @@ type
     procedure btnUpdtDBClick(Sender: TObject);
     procedure dspEmpSkillUpdateData(Sender: TObject;
       DataSet: TCustomClientDataSet);
+    procedure dspEmpSkillGetTableName(Sender: TObject; DataSet: TDataSet;
+      var TableName: String);
+    procedure btnDelEmpSkillClick(Sender: TObject);
   private
     { Private declarations }
     procedure SetTblFilter(tbl: string);
@@ -267,6 +270,19 @@ begin
 		FieldByName('SkillID').ProviderFlags := [pfInUpdate, pfInKey];
 		FieldByName('Skill').ProviderFlags := [];
   end;
+end;
+
+procedure TfrmDBDemo.dspEmpSkillGetTableName(Sender: TObject;
+  DataSet: TDataSet; var TableName: String);
+begin
+  ShowMessage(TableName);
+end;
+
+procedure TfrmDBDemo.btnDelEmpSkillClick(Sender: TObject);
+begin
+  if cdsEmpSkill.RecNo < 1 then
+  	exit;
+  cdsEmpSkill.Delete();
 end;
 
 end.
