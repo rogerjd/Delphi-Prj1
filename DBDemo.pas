@@ -42,6 +42,11 @@ type
     dsSkills: TDataSource;
     Button3: TButton;
     dbgEmpSkills: TDBGrid;
+    lblResult: TLabel;
+    gbxUpdtEmpSkill: TGroupBox;
+    btnDelEmpSkill: TButton;
+    btnAddEmpSkill: TButton;
+    btnUpdtDB: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -53,10 +58,16 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSkillEmpsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnAddEmpSkillClick(Sender: TObject);
+    procedure btnUpdtDBClick(Sender: TObject);
+    procedure dspEmpSkillUpdateData(Sender: TObject;
+      DataSet: TCustomClientDataSet);
   private
     { Private declarations }
     procedure SetTblFilter(tbl: string);
     procedure ToggleButtons();
+    procedure SetupUpdtBtns(tbl: string);
+    procedure HideGridCols();
   public
     { Public declarations }
   end;
@@ -135,14 +146,24 @@ procedure TfrmDBDemo.Button3Click(Sender: TObject);
 begin
   ShowMessage(cdsEmps.FieldByName('EmpNo').Value);
 end;
-//todo: put emp name in lbl, above the skills
+
 procedure TfrmDBDemo.btnEmpSkillClick(Sender: TObject);
+
+  procedure SetLbl();
+  begin
+    lblResult.Caption := cdsEmps.FieldByName('LastName').Value + '  Skills:';
+    gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + cdsEmps.FieldByName('LastName').Value;
+  end;
+
 begin
   qryEmpSkill.SQL.Clear();
   cdsEmpSkill.Close();
-  qryEmpSkill.SQL.Add('select skill from empSkills e, skills s where (e.EmpID = :eid) and s.SkillID = e.SkillID');
+  qryEmpSkill.SQL.Add('select EmpID, e.SkillID, skill from empSkills e, skills s where (e.EmpID = :eid) and s.SkillID = e.SkillID');
   qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
   cdsEmpSkill.Open();
+  SetLbl();
+  SetupUpdtBtns('emp');
+  HideGridCols();
 end;
 
 procedure TfrmDBDemo.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -152,22 +173,100 @@ begin
   cdsSkills.Close();
   cdsEmpSkill.Close();
 end;
-//todo: put label w/skill above emps
+
 procedure TfrmDBDemo.btnSkillEmpsClick(Sender: TObject);
+
+  procedure SetLbl();
+  begin
+    lblResult.Caption := cdsSkills.FieldByName('Skill').Value + '  Employees:';
+  end;
+
 begin
   qryEmpSkill.SQL.Clear();
   cdsEmpSkill.Close();
   qryEmpSkill.SQL.Add('select LastName from employee e, EmpSkills s where (s.SkillID = :sid) and e.EmpNo = s.EmpID');
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
+  SetLbl();
+  SetupUpdtBtns('skill');
 end;
-//TODO:
+
 procedure TfrmDBDemo.FormCreate(Sender: TObject);
 begin
   SetTblFilter('emp');
-  SetTblFilter('skill');  
+  SetTblFilter('skill');
   cdsEmps.Open();
   cdsSkills.Open();
+end;
+
+
+procedure TfrmDBDemo.SetupUpdtBtns(tbl: string);
+begin
+  btnDelEmpSkill.Enabled := cdsEmpSkill.RecordCount > 0;
+
+  if tbl = 'emp' then
+    btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0
+  else if tbl = 'skill' then
+    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0
+end;
+
+procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
+var
+  EmpID,
+  SkillID: integer;
+
+  function SkillExists(): Boolean;
+  var
+    b: Boolean;
+  begin
+    cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';
+    Result := cdsEmpSkill.FindKey([EmpID, SkillID]);
+    cdsEmpSkill.IndexFieldNames := '';
+  end;
+
+begin
+  EmpID := cdsEmps.FieldByName('EmpNo').AsInteger;
+  SkillID := cdsSkills.FieldByName('SkillID').AsInteger;
+
+  if SkillExists() then begin
+    MessageDlg('Employee already has skill', mtError, [mbOk], 0);
+    exit;
+  end;
+
+  try
+    cdsEmpSkill.Insert;
+  	cdsEmpSkill.FieldByName('EmpID').Value := EmpID;
+  	cdsEmpSkill.FieldByName('SkillID').Value := SkillID;
+  	cdsEmpSkill.FieldByName('Skill').Value := cdsSkills.FieldByName('Skill').Value;
+  	cdsEmpSkill.Post;
+  except
+    cdsEmpSkill.Cancel();
+  end;
+end;
+
+//these hold the PK, dont show
+procedure TfrmDBDemo.HideGridCols;
+begin
+  dbgEmpSkills.Columns[0].Visible := False;
+  dbgEmpSkills.Columns[1].Visible := False;
+end;
+
+procedure TfrmDBDemo.btnUpdtDBClick(Sender: TObject);
+var
+  n: Integer;
+begin
+  n := cdsEmpSkill.ApplyUpdates(0);
+end;
+
+procedure TfrmDBDemo.dspEmpSkillUpdateData(Sender: TObject;
+  DataSet: TCustomClientDataSet);
+begin
+  with DataSet do
+  begin
+		FieldByName('EmpID').ProviderFlags := [pfInUpdate, pfInKey];
+		FieldByName('SkillID').ProviderFlags := [pfInUpdate, pfInKey];
+		FieldByName('Skill').ProviderFlags := [];
+  end;
 end;
 
 end.

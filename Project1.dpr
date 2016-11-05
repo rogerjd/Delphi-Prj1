@@ -1,5 +1,7 @@
 program Project1;
 
+{%ToDo 'Project1.todo'}
+
 uses
   Forms,
   MainForm in 'MainForm.pas' {frmMain},

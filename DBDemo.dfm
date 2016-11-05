@@ -97,9 +97,15 @@ object frmDBDemo: TfrmDBDemo
     Height = 105
     Caption = 'Results'
     TabOrder = 4
+    object lblResult: TLabel
+      Left = 11
+      Top = 80
+      Width = 3
+      Height = 13
+    end
     object btnEmpSkill: TButton
       Left = 60
-      Top = 20
+      Top = 12
       Width = 105
       Height = 25
       Caption = 'Employee Skills'
@@ -108,7 +114,7 @@ object frmDBDemo: TfrmDBDemo
     end
     object btnSkillEmps: TButton
       Left = 59
-      Top = 60
+      Top = 44
       Width = 107
       Height = 25
       Caption = 'Skill Employees'
@@ -119,7 +125,7 @@ object frmDBDemo: TfrmDBDemo
   object GroupBox3: TGroupBox
     Left = 616
     Top = 48
-    Width = 313
+    Width = 320
     Height = 105
     Caption = 'Skills'
     TabOrder = 5
@@ -161,7 +167,7 @@ object frmDBDemo: TfrmDBDemo
   end
   object dbgdSkills: TDBGrid
     Left = 616
-    Top = 168
+    Top = 160
     Width = 320
     Height = 120
     DataSource = dsSkills
@@ -183,8 +189,8 @@ object frmDBDemo: TfrmDBDemo
   end
   object dbgEmpSkills: TDBGrid
     Left = 352
-    Top = 168
-    Width = 217
+    Top = 160
+    Width = 225
     Height = 120
     DataSource = dsEmpSkill
     TabOrder = 8
@@ -193,6 +199,42 @@ object frmDBDemo: TfrmDBDemo
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+  end
+  object gbxUpdtEmpSkill: TGroupBox
+    Left = 352
+    Top = 288
+    Width = 225
+    Height = 105
+    Caption = 'gbxUpdtEmpSkill'
+    TabOrder = 9
+    object btnDelEmpSkill: TButton
+      Left = 119
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = 'Delete'
+      Enabled = False
+      TabOrder = 0
+    end
+    object btnAddEmpSkill: TButton
+      Left = 31
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = 'Add'
+      Enabled = False
+      TabOrder = 1
+      OnClick = btnAddEmpSkillClick
+    end
+    object btnUpdtDB: TButton
+      Left = 64
+      Top = 64
+      Width = 105
+      Height = 25
+      Caption = 'Update Data Base'
+      TabOrder = 2
+      OnClick = btnUpdtDBClick
+    end
   end
   object Database1: TDatabase
     AliasName = 'DBDEMOS'
@@ -261,6 +303,7 @@ object frmDBDemo: TfrmDBDemo
   object dspSkills: TDataSetProvider
     DataSet = qrySkills
     Constraints = True
+    UpdateMode = upWhereKeyOnly
     Left = 680
     Top = 16
   end
@@ -281,6 +324,8 @@ object frmDBDemo: TfrmDBDemo
   object dspEmpSkill: TDataSetProvider
     DataSet = qryEmpSkill
     Constraints = True
+    UpdateMode = upWhereKeyOnly
+    OnUpdateData = dspEmpSkillUpdateData
     Left = 400
     Top = 8
   end
@@ -293,8 +338,8 @@ object frmDBDemo: TfrmDBDemo
   end
   object dsEmpSkill: TDataSource
     DataSet = cdsEmpSkill
-    Left = 384
-    Top = 152
+    Left = 360
+    Top = 208
   end
   object dsSkills: TDataSource
     DataSet = cdsSkills
