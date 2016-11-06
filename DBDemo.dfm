@@ -193,6 +193,7 @@ object frmDBDemo: TfrmDBDemo
     Width = 225
     Height = 120
     DataSource = dsEmpSkill
+    ReadOnly = True
     TabOrder = 8
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
