@@ -147,7 +147,7 @@ object frmDBDemo: TfrmDBDemo
       Caption = 'Close'
       Enabled = False
       TabOrder = 1
-      OnClick = btnEmpTblCloseClick
+      OnClick = btnSkillTblCloseClick
     end
     object edtSkillFilter: TEdit
       Left = 16

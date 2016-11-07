@@ -55,7 +55,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
-    procedure btnEmpTblCloseClick(Sender: TObject);
+    procedure btnSkillTblCloseClick(Sender: TObject);
     procedure btnFilterTblClick(Sender: TObject);
     procedure btnSkillTblOpenClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -74,10 +74,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnSkillDelClick(Sender: TObject);
     procedure btnSkillUpdtClick(Sender: TObject);
+    procedure btnEmpTblCloseClick(Sender: TObject);
   private
     { Private declarations }
     procedure SetTblFilter(tbl: string);
-    procedure SetupUpdtBtns(tbl: string);
+    procedure SetupEmpSkillsUpdtBtns(tbl: string);
     procedure HideGridCols();
     procedure SetupSkillEditBtns;
     procedure SetupSkillTblBtns();
@@ -113,7 +114,7 @@ begin
   btnEmpTblClose.Enabled := True;
 end;
 
-procedure TfrmDBDemo.btnEmpTblCloseClick(Sender: TObject);
+procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
   cdsSkills.Close();
   SetupSkillTblBtns();
@@ -167,7 +168,7 @@ begin
   qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
   cdsEmpSkill.Open();
   SetLbl();
-  SetupUpdtBtns('emp');
+  SetupEmpSkillsUpdtBtns('emp');
   HideGridCols();
 end;
 
@@ -193,7 +194,7 @@ begin
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
   SetLbl();
-  SetupUpdtBtns('skill');
+  SetupEmpSkillsUpdtBtns('skill');
 end;
 
 procedure TfrmDBDemo.FormCreate(Sender: TObject);
@@ -204,12 +205,19 @@ begin
   cdsSkills.Open();
 end;
 
-procedure TfrmDBDemo.SetupUpdtBtns(tbl: string);
+procedure TfrmDBDemo.SetupEmpSkillsUpdtBtns(tbl: string);
 begin
+	if not cdsEmps.Active then
+  begin
+    btnAddEmpSkill.Enabled := False;
+    btnDelEmpSkill.Enabled := False;
+    Exit;
+  end;
+
   btnDelEmpSkill.Enabled := cdsEmpSkill.RecordCount > 0;
 
   if tbl = 'emp' then
-    btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0
+    btnAddEmpSkill.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0)
   else if tbl = 'skill' then
     btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0
 end;
@@ -323,6 +331,9 @@ begin
   btnSkillTblClose.Enabled := cdsSkills.Active;
 
   SetupSkillEditBtns();
+
+  if cdsEmpSkill.Active then
+    SetupEmpSkillsUpdtBtns('emp');
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
@@ -338,6 +349,11 @@ var
   s: String;
 begin
   s := InputBox('Updt', 'enter', 'def');
+end;
+
+procedure TfrmDBDemo.btnEmpTblCloseClick(Sender: TObject);
+begin
+  cdsEmps.Close();
 end;
 
 end.
