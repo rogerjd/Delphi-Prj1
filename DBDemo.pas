@@ -46,7 +46,12 @@ type
     gbxUpdtEmpSkill: TGroupBox;
     btnDelEmpSkill: TButton;
     btnAddEmpSkill: TButton;
-    btnUpdtDB: TButton;
+    btnEmpSkillsUpdtDB: TButton;
+    gbxSkills: TGroupBox;
+    btnSkillDel: TButton;
+    btnSkillAdd: TButton;
+    btnSkillUpdtDB: TButton;
+    btnSkillUpdt: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -59,18 +64,23 @@ type
     procedure btnSkillEmpsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAddEmpSkillClick(Sender: TObject);
-    procedure btnUpdtDBClick(Sender: TObject);
+    procedure btnEmpSkillsUpdtDBClick(Sender: TObject);
     procedure dspEmpSkillUpdateData(Sender: TObject;
       DataSet: TCustomClientDataSet);
     procedure dspEmpSkillGetTableName(Sender: TObject; DataSet: TDataSet;
       var TableName: String);
     procedure btnDelEmpSkillClick(Sender: TObject);
+    procedure btnSkillAddClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnSkillDelClick(Sender: TObject);
+    procedure btnSkillUpdtClick(Sender: TObject);
   private
     { Private declarations }
     procedure SetTblFilter(tbl: string);
-    procedure ToggleButtons();
     procedure SetupUpdtBtns(tbl: string);
     procedure HideGridCols();
+    procedure SetupSkillEditBtns;
+    procedure SetupSkillTblBtns();
   public
     { Public declarations }
   end;
@@ -105,9 +115,8 @@ end;
 
 procedure TfrmDBDemo.btnEmpTblCloseClick(Sender: TObject);
 begin
-  btnEmpTblClose.Enabled := False;
-  cdsEmps.Close();
-  btnEmpTblOpen.Enabled := True;
+  cdsSkills.Close();
+  SetupSkillTblBtns();
 end;
 
 procedure TfrmDBDemo.btnFilterTblClick(Sender: TObject);
@@ -131,18 +140,11 @@ begin
     qrySkills.Params[0].Value := edtSkillFilter.Text + '%'
 end;
 
-procedure TfrmDBDemo.ToggleButtons;
-begin
-
-end;
-
 procedure TfrmDBDemo.btnSkillTblOpenClick(Sender: TObject);
 begin
-  btnSkillTblOpen.Enabled := False;
   SetTblFilter('skill');
   cdsSkills.Open();
-//  ShowMessage(BoolToStr(Database1.Connected));
-  btnSkillTblOpen.Enabled := True;
+	SetupSkillTblBtns();
 end;
 
 procedure TfrmDBDemo.Button3Click(Sender: TObject);
@@ -202,7 +204,6 @@ begin
   cdsSkills.Open();
 end;
 
-
 procedure TfrmDBDemo.SetupUpdtBtns(tbl: string);
 begin
   btnDelEmpSkill.Enabled := cdsEmpSkill.RecordCount > 0;
@@ -254,7 +255,7 @@ begin
   dbgEmpSkills.Columns[1].Visible := False;
 end;
 
-procedure TfrmDBDemo.btnUpdtDBClick(Sender: TObject);
+procedure TfrmDBDemo.btnEmpSkillsUpdtDBClick(Sender: TObject);
 var
   n: Integer;
 begin
@@ -283,6 +284,60 @@ begin
   if cdsEmpSkill.RecNo < 1 then
   	exit;
   cdsEmpSkill.Delete();
+end;
+
+procedure TfrmDBDemo.btnSkillAddClick(Sender: TObject);
+var
+  s: string;
+begin
+  s := InputBox('Add', 'enter', 'def');
+  SetupSkillEditBtns();
+end;
+
+//enable or disable btns
+procedure TfrmDBDemo.SetupSkillEditBtns;
+begin
+  if not cdsSkills.Active then
+  begin
+    btnSkillAdd.Enabled := False;
+    btnSkillUpdt.Enabled := False;
+    btnSkillDel.Enabled := False;
+    btnSkillUpdtDB.Enabled := False;
+    Exit;
+  end;
+
+	btnSkillUpdtDB.Enabled := True;
+  btnSkillAdd.Enabled := True;
+  btnSkillDel.Enabled := cdsSkills.RecordCount > 0;
+  btnSkillUpdt.Enabled := btnSkillDel.Enabled;
+end;
+
+procedure TfrmDBDemo.FormShow(Sender: TObject);
+begin
+	btnSkillTblOpenClick(nil);
+end;
+
+procedure TfrmDBDemo.SetupSkillTblBtns;
+begin
+  btnSkillTblOpen.Enabled := not cdsSkills.Active;
+  btnSkillTblClose.Enabled := cdsSkills.Active;
+
+  SetupSkillEditBtns();
+end;
+
+procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
+var
+  s: String;
+begin
+	MessageDlg('Delete ?', mtConfirmation, mbOKCancel, 0);
+	SetupSkillEditBtns();
+end;
+
+procedure TfrmDBDemo.btnSkillUpdtClick(Sender: TObject);
+var
+  s: String;
+begin
+  s := InputBox('Updt', 'enter', 'def');
 end;
 
 end.

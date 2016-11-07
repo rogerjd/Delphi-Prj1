@@ -1,8 +1,8 @@
 object frmDBDemo: TfrmDBDemo
-  Left = 252
-  Top = 329
+  Left = 218
+  Top = 270
   Width = 979
-  Height = 563
+  Height = 481
   Caption = 'frmDBDemo'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,6 +13,7 @@ object frmDBDemo: TfrmDBDemo
   OldCreateOrder = False
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object dbgdEmps: TDBGrid
@@ -228,14 +229,61 @@ object frmDBDemo: TfrmDBDemo
       TabOrder = 1
       OnClick = btnAddEmpSkillClick
     end
-    object btnUpdtDB: TButton
+    object btnEmpSkillsUpdtDB: TButton
       Left = 64
       Top = 64
       Width = 105
       Height = 25
       Caption = 'Update Data Base'
       TabOrder = 2
-      OnClick = btnUpdtDBClick
+      OnClick = btnEmpSkillsUpdtDBClick
+    end
+  end
+  object gbxSkills: TGroupBox
+    Left = 656
+    Top = 288
+    Width = 225
+    Height = 105
+    Caption = 'Skills'
+    TabOrder = 10
+    object btnSkillDel: TButton
+      Left = 151
+      Top = 24
+      Width = 50
+      Height = 25
+      Caption = 'Delete'
+      Enabled = False
+      TabOrder = 0
+      OnClick = btnSkillDelClick
+    end
+    object btnSkillAdd: TButton
+      Left = 23
+      Top = 24
+      Width = 50
+      Height = 25
+      Caption = 'Add'
+      Enabled = False
+      TabOrder = 1
+      OnClick = btnSkillAddClick
+    end
+    object btnSkillUpdtDB: TButton
+      Left = 60
+      Top = 64
+      Width = 105
+      Height = 25
+      Caption = 'Update Data Base'
+      TabOrder = 2
+      OnClick = btnEmpSkillsUpdtDBClick
+    end
+    object btnSkillUpdt: TButton
+      Left = 87
+      Top = 24
+      Width = 50
+      Height = 25
+      Caption = 'Update'
+      Enabled = False
+      TabOrder = 3
+      OnClick = btnSkillUpdtClick
     end
   end
   object Database1: TDatabase
