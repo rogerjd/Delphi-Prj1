@@ -71,7 +71,6 @@ type
       var TableName: String);
     procedure btnDelEmpSkillClick(Sender: TObject);
     procedure btnSkillAddClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
     procedure btnSkillDelClick(Sender: TObject);
     procedure btnSkillUpdtClick(Sender: TObject);
     procedure btnEmpTblCloseClick(Sender: TObject);
@@ -123,7 +122,10 @@ procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
   cdsSkills.Close();
   SetupSkillTblBtns();
+
+//todo: remv
   SetupEmpCtrls();
+
   EmpSkillsTblCtrl();
 end;
 
@@ -210,7 +212,7 @@ begin
 (*
   SetEmpSkillsQryFilter('emp');
   SetEmpSkillsQryFilter('skill');
-*)  
+*)
   btnEmpTblOpen.Click();
   btnSkillTblOpen.Click();
 //  cdsSkills.Open();
@@ -218,25 +220,20 @@ end;
 
 procedure TfrmDBDemo.SetupEmpSkillsCtrls(tbl: string);
 begin
-(* todo: remv
-	if not cdsEmps.Active then
-  begin
-    btnAddEmpSkill.Enabled := False;
-    btnDelEmpSkill.Enabled := False;
-    Exit;
-  end;
-*)
-
   btnEmpSkill.Enabled := cdsEmpSkill.Active;
   btnSkillEmps.Enabled := cdsEmpSkill.Active;
 
-  btnDelEmpSkill.Enabled := cdsEmpSkill.RecordCount > 0;
+  btnDelEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmpSkill.RecordCount > 0);
 
   if tbl = 'emp' then
     btnAddEmpSkill.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0)
   else if tbl = 'skill' then
-    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0;
+    btnAddEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmps.RecordCount > 0)
+  else
+  	btnAddEmpSkill.Enabled := False;
 
+  btnEmpSkillsUpdtDB.Enabled := cdsEmpSkill.Active;
+//todo: maybe a little sloppy, do only 1 way ie: not tbl = '' and cdsES.Active ?
 end;
 
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
@@ -337,11 +334,6 @@ begin
   btnSkillUpdt.Enabled := btnSkillDel.Enabled;
 end;
 
-procedure TfrmDBDemo.FormShow(Sender: TObject);
-begin
-	btnSkillTblOpenClick(nil);
-end;
-
 procedure TfrmDBDemo.SetupSkillTblBtns;
 begin
   btnSkillTblOpen.Enabled := not cdsSkills.Active;
@@ -349,8 +341,11 @@ begin
 
   SetupSkillEditBtns();
 
+(*
+  //todo: close & open
   if cdsEmpSkill.Active then
     SetupEmpSkillsCtrls('emp');
+*)    
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
@@ -398,7 +393,11 @@ begin
   if cdsEmps.Active and cdsSkills.Active then
   	btnEmpSkill.Click()
   else begin
-  	cdsEmpSkill.Close();
+  	if cdsEmpSkill.Active then
+    begin
+    	cdsEmpSkill.Close();
+      SetupEmpSkillsCtrls('');
+    end;
   end;
 end;
 
