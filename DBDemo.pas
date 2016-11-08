@@ -122,10 +122,6 @@ procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
   cdsSkills.Close();
   SetupSkillTblBtns();
-
-//todo: remv
-  SetupEmpCtrls();
-
   EmpSkillsTblCtrl();
 end;
 
@@ -338,14 +334,7 @@ procedure TfrmDBDemo.SetupSkillTblBtns;
 begin
   btnSkillTblOpen.Enabled := not cdsSkills.Active;
   btnSkillTblClose.Enabled := cdsSkills.Active;
-
   SetupSkillEditBtns();
-
-(*
-  //todo: close & open
-  if cdsEmpSkill.Active then
-    SetupEmpSkillsCtrls('emp');
-*)    
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
@@ -376,16 +365,6 @@ begin
   btnEmpTblClose.Enabled := cdsEmps.Active;
   btnFilterTbl.Enabled := cdsEmps.Active;
   edtEmpFilter.Enabled := cdsEmps.Active;
-
-(* todo: remv
-  btnEmpSkill.Enabled := cdsEmps.Active;
-	if not cdsEmps.Active then
-  begin
-    btnAddEmpSkill.Enabled := False;
-    btnDelEmpSkill.Enabled := False;
-    Exit;
-  end;
-*)
 end;
 
 procedure TfrmDBDemo.EmpSkillsTblCtrl;
