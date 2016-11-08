@@ -77,11 +77,16 @@ type
     procedure btnEmpTblCloseClick(Sender: TObject);
   private
     { Private declarations }
-    procedure SetTblFilter(tbl: string);
-    procedure SetupEmpSkillsUpdtBtns(tbl: string);
-    procedure HideGridCols();
+    procedure SetEmpSkillsQryFilter(tbl: string);
+    procedure SetupEmpSkillsCtrls(tbl: string);
+    procedure HideEmpSkillsGridCols();
+
     procedure SetupSkillEditBtns;
     procedure SetupSkillTblBtns();
+
+    procedure SetupEmpCtrls;
+
+    procedure EmpSkillsTblCtrl();
   public
     { Public declarations }
   end;
@@ -107,23 +112,25 @@ end;
 
 procedure TfrmDBDemo.btnEmpTblOpenClick(Sender: TObject);
 begin
-  btnEmpTblOpen.Enabled := False;
-  SetTblFilter('emp');
+  SetEmpSkillsQryFilter('emp');
   cdsEmps.Open();
 //  ShowMessage(BoolToStr(Database1.Connected));
-  btnEmpTblClose.Enabled := True;
+	SetupEmpCtrls();
+  EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
   cdsSkills.Close();
   SetupSkillTblBtns();
+  SetupEmpCtrls();
+  EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.btnFilterTblClick(Sender: TObject);
 begin
   cdsEmps.Close(); //must close, for new filter
-  SetTblFilter('emp');
+  SetEmpSkillsQryFilter('emp');
   cdsEmps.Open();
 
 //  ClientDataSet1.ap
@@ -133,7 +140,7 @@ begin
 *)
 end;
 
-procedure TfrmDBDemo.SetTblFilter(tbl: string);
+procedure TfrmDBDemo.SetEmpSkillsQryFilter(tbl: string);
 begin
   if tbl = 'emp' then
     qryEmps.Params[0].Value := edtEmpFilter.Text + '%'
@@ -143,9 +150,10 @@ end;
 
 procedure TfrmDBDemo.btnSkillTblOpenClick(Sender: TObject);
 begin
-  SetTblFilter('skill');
+  SetEmpSkillsQryFilter('skill');
   cdsSkills.Open();
 	SetupSkillTblBtns();
+  EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.Button3Click(Sender: TObject);
@@ -168,8 +176,8 @@ begin
   qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
   cdsEmpSkill.Open();
   SetLbl();
-  SetupEmpSkillsUpdtBtns('emp');
-  HideGridCols();
+  SetupEmpSkillsCtrls('emp');
+  HideEmpSkillsGridCols();
 end;
 
 procedure TfrmDBDemo.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -194,32 +202,41 @@ begin
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
   SetLbl();
-  SetupEmpSkillsUpdtBtns('skill');
+  SetupEmpSkillsCtrls('skill');
 end;
 
 procedure TfrmDBDemo.FormCreate(Sender: TObject);
 begin
-  SetTblFilter('emp');
-  SetTblFilter('skill');
-  cdsEmps.Open();
-  cdsSkills.Open();
+(*
+  SetEmpSkillsQryFilter('emp');
+  SetEmpSkillsQryFilter('skill');
+*)  
+  btnEmpTblOpen.Click();
+  btnSkillTblOpen.Click();
+//  cdsSkills.Open();
 end;
 
-procedure TfrmDBDemo.SetupEmpSkillsUpdtBtns(tbl: string);
+procedure TfrmDBDemo.SetupEmpSkillsCtrls(tbl: string);
 begin
+(* todo: remv
 	if not cdsEmps.Active then
   begin
     btnAddEmpSkill.Enabled := False;
     btnDelEmpSkill.Enabled := False;
     Exit;
   end;
+*)
+
+  btnEmpSkill.Enabled := cdsEmpSkill.Active;
+  btnSkillEmps.Enabled := cdsEmpSkill.Active;
 
   btnDelEmpSkill.Enabled := cdsEmpSkill.RecordCount > 0;
 
   if tbl = 'emp' then
     btnAddEmpSkill.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0)
   else if tbl = 'skill' then
-    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0
+    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0;
+
 end;
 
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
@@ -257,7 +274,7 @@ begin
 end;
 
 //these hold the PK, dont show
-procedure TfrmDBDemo.HideGridCols;
+procedure TfrmDBDemo.HideEmpSkillsGridCols;
 begin
   dbgEmpSkills.Columns[0].Visible := False;
   dbgEmpSkills.Columns[1].Visible := False;
@@ -333,7 +350,7 @@ begin
   SetupSkillEditBtns();
 
   if cdsEmpSkill.Active then
-    SetupEmpSkillsUpdtBtns('emp');
+    SetupEmpSkillsCtrls('emp');
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
@@ -354,6 +371,35 @@ end;
 procedure TfrmDBDemo.btnEmpTblCloseClick(Sender: TObject);
 begin
   cdsEmps.Close();
+	SetupEmpCtrls();
+  EmpSkillsTblCtrl();
+end;
+
+procedure TfrmDBDemo.SetupEmpCtrls;
+begin
+	btnEmpTblOpen.Enabled := not cdsEmps.Active;
+  btnEmpTblClose.Enabled := cdsEmps.Active;
+  btnFilterTbl.Enabled := cdsEmps.Active;
+  edtEmpFilter.Enabled := cdsEmps.Active;
+
+(* todo: remv
+  btnEmpSkill.Enabled := cdsEmps.Active;
+	if not cdsEmps.Active then
+  begin
+    btnAddEmpSkill.Enabled := False;
+    btnDelEmpSkill.Enabled := False;
+    Exit;
+  end;
+*)
+end;
+
+procedure TfrmDBDemo.EmpSkillsTblCtrl;
+begin
+  if cdsEmps.Active and cdsSkills.Active then
+  	btnEmpSkill.Click()
+  else begin
+  	cdsEmpSkill.Close();
+  end;
 end;
 
 end.
