@@ -1,6 +1,6 @@
 object frmDBDemo: TfrmDBDemo
-  Left = 218
-  Top = 270
+  Left = 219
+  Top = 314
   Width = 979
   Height = 481
   Caption = 'frmDBDemo'
