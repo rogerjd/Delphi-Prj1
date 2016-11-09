@@ -1,5 +1,9 @@
 unit DBDemo;
 
+(*
+  - for EmpSkills (middle) to be 'open', both Emps and Skills must be open.
+*)
+
 interface
 
 uses
@@ -8,6 +12,8 @@ uses
   DBCtrls;
 
 type
+  TEmpSkill = (esEmp, esSkill);
+
   TfrmDBDemo = class(TForm)
     Database1: TDatabase;
     qryEmps: TQuery;
@@ -75,6 +81,7 @@ type
     procedure btnSkillUpdtClick(Sender: TObject);
     procedure btnEmpTblCloseClick(Sender: TObject);
   private
+    EmpSkillMode: TEmpSkill;
     { Private declarations }
     procedure SetEmpSkillsQryFilter(tbl: string);
     procedure SetupEmpSkillsCtrls(tbl: string);
@@ -174,6 +181,7 @@ begin
   qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
   cdsEmpSkill.Open();
   SetLbl();
+  EmpSkillMode := esEmp;
   SetupEmpSkillsCtrls('emp');
   HideEmpSkillsGridCols();
 end;
@@ -196,11 +204,13 @@ procedure TfrmDBDemo.btnSkillEmpsClick(Sender: TObject);
 begin
   qryEmpSkill.SQL.Clear();
   cdsEmpSkill.Close();
-  qryEmpSkill.SQL.Add('select LastName from employee e, EmpSkills s where (s.SkillID = :sid) and e.EmpNo = s.EmpID');
+  qryEmpSkill.SQL.Add('select es.EmpID, es.SkillID, LastName from EmpSkills es, employee e where (es.SkillID = :sid) and e.EmpNo = es.EmpID');
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
   SetLbl();
+  EmpSkillMode := esSkill;
   SetupEmpSkillsCtrls('skill');
+  HideEmpSkillsGridCols();
 end;
 
 procedure TfrmDBDemo.FormCreate(Sender: TObject);
@@ -214,6 +224,7 @@ begin
 //  cdsSkills.Open();
 end;
 
+//todo: record count lbl
 procedure TfrmDBDemo.SetupEmpSkillsCtrls(tbl: string);
 begin
   btnEmpSkill.Enabled := cdsEmpSkill.Active;
@@ -222,14 +233,13 @@ begin
   btnDelEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmpSkill.RecordCount > 0);
 
   if tbl = 'emp' then
-    btnAddEmpSkill.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0)
+    btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0
   else if tbl = 'skill' then
-    btnAddEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmps.RecordCount > 0)
+    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0
   else
   	btnAddEmpSkill.Enabled := False;
 
   btnEmpSkillsUpdtDB.Enabled := cdsEmpSkill.Active;
-//todo: maybe a little sloppy, do only 1 way ie: not tbl = '' and cdsES.Active ?
 end;
 
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
@@ -255,11 +265,18 @@ begin
     exit;
   end;
 
+//ref: this passes by on 2 cases 1) emp > skills, and 2) skill > emps. the 3rd
+//  varies per each case
   try
     cdsEmpSkill.Insert;
   	cdsEmpSkill.FieldByName('EmpID').Value := EmpID;
   	cdsEmpSkill.FieldByName('SkillID').Value := SkillID;
-  	cdsEmpSkill.FieldByName('Skill').Value := cdsSkills.FieldByName('Skill').Value;
+
+		case EmpSkillMode	of
+      esEmp: cdsEmpSkill.FieldByName('Skill').Value := cdsSkills.FieldByName('Skill').Value;
+      esSkill: cdsEmpSkill.FieldByName('LastName').Value := cdsEmps.FieldByName('LastName').Value;
+    end;
+
   	cdsEmpSkill.Post;
   except
     cdsEmpSkill.Cancel();
@@ -287,7 +304,10 @@ begin
   begin
 		FieldByName('EmpID').ProviderFlags := [pfInUpdate, pfInKey];
 		FieldByName('SkillID').ProviderFlags := [pfInUpdate, pfInKey];
-		FieldByName('Skill').ProviderFlags := [];
+		case EmpSkillMode	of
+      esEmp: FieldByName('Skill').ProviderFlags := []; //todo: bug, varies w/2 cases
+      esSkill: FieldByName('LastName').ProviderFlags := [];   
+    end;
   end;
 end;
 
