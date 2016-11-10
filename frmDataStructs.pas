@@ -40,7 +40,6 @@ type
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
-    a: Integer;
   public
     { Public declarations }
   end;
@@ -173,8 +172,6 @@ end;
 
 procedure TForm1.btnListClick(Sender: TObject);
 var
-  i: Integer;
-  b: Boolean;
   l: TList;
 begin
   ShowMessage('List');

@@ -31,6 +31,7 @@ procedure CaseTst();
 var
   me: TMyEnum;
 begin
+	me := red;
   case me of
     red: ;
     green: ;
