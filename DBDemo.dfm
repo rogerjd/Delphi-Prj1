@@ -80,14 +80,14 @@ object frmDBDemo: TfrmDBDemo
       Height = 21
       TabOrder = 2
     end
-    object btnFilterTbl: TButton
+    object btnEmpFilter: TButton
       Left = 144
       Top = 72
       Width = 75
       Height = 25
       Caption = '&Filter'
       TabOrder = 3
-      OnClick = btnFilterTblClick
+      OnClick = btnEmpFilterClick
     end
   end
   object GroupBox2: TGroupBox
@@ -155,14 +155,14 @@ object frmDBDemo: TfrmDBDemo
       Height = 21
       TabOrder = 2
     end
-    object Button5: TButton
+    object btnSkillFilter: TButton
       Left = 144
       Top = 72
       Width = 75
       Height = 25
       Caption = '&Filter'
       TabOrder = 3
-      OnClick = btnFilterTblClick
+      OnClick = btnEmpFilterClick
     end
   end
   object dbgdSkills: TDBGrid

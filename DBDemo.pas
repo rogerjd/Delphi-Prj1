@@ -28,13 +28,13 @@ type
     btnEmpTblClose: TButton;
     GroupBox1: TGroupBox;
     edtEmpFilter: TEdit;
-    btnFilterTbl: TButton;
+    btnEmpFilter: TButton;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     btnSkillTblOpen: TButton;
     btnSkillTblClose: TButton;
     edtSkillFilter: TEdit;
-    Button5: TButton;
+    btnSkillFilter: TButton;
     dbgdSkills: TDBGrid;
     btnEmpSkill: TButton;
     btnSkillEmps: TButton;
@@ -62,7 +62,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
     procedure btnSkillTblCloseClick(Sender: TObject);
-    procedure btnFilterTblClick(Sender: TObject);
+    procedure btnEmpFilterClick(Sender: TObject);
     procedure btnSkillTblOpenClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure btnEmpSkillClick(Sender: TObject);
@@ -87,9 +87,7 @@ type
     procedure SetupEmpSkillsCtrls(tbl: string);
     procedure HideEmpSkillsGridCols();
 
-    procedure SetupSkillEditBtns;
-    procedure SetupSkillTblBtns();
-
+    procedure SetupSkillCtrls();
     procedure SetupEmpCtrls;
 
     procedure EmpSkillsTblCtrl();
@@ -128,11 +126,11 @@ end;
 procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
   cdsSkills.Close();
-  SetupSkillTblBtns();
+  SetupSkillCtrls();
   EmpSkillsTblCtrl();
 end;
 
-procedure TfrmDBDemo.btnFilterTblClick(Sender: TObject);
+procedure TfrmDBDemo.btnEmpFilterClick(Sender: TObject);
 begin
   cdsEmps.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('emp');
@@ -157,7 +155,7 @@ procedure TfrmDBDemo.btnSkillTblOpenClick(Sender: TObject);
 begin
   SetEmpSkillsQryFilter('skill');
   cdsSkills.Open();
-	SetupSkillTblBtns();
+	SetupSkillCtrls();
   EmpSkillsTblCtrl();
 end;
 
@@ -325,32 +323,23 @@ var
   s: string;
 begin
   s := InputBox('Add', 'enter', 'def');
-  SetupSkillEditBtns();
+  SetupSkillCtrls();
 end;
 
-//enable or disable btns
-procedure TfrmDBDemo.SetupSkillEditBtns;
-begin
-  if not cdsSkills.Active then
-  begin
-    btnSkillAdd.Enabled := False;
-    btnSkillUpdt.Enabled := False;
-    btnSkillDel.Enabled := False;
-    btnSkillUpdtDB.Enabled := False;
-    Exit;
-  end;
-
-	btnSkillUpdtDB.Enabled := True;
-  btnSkillAdd.Enabled := True;
-  btnSkillDel.Enabled := cdsSkills.RecordCount > 0;
-  btnSkillUpdt.Enabled := btnSkillDel.Enabled;
-end;
-
-procedure TfrmDBDemo.SetupSkillTblBtns;
+//run through ctrls, and updt accordingly; though after Add/Updt/Del, some
+//  cases are redundant(tbl must be open), but doesnt hurt and keeps it simple
+procedure TfrmDBDemo.SetupSkillCtrls;
 begin
   btnSkillTblOpen.Enabled := not cdsSkills.Active;
   btnSkillTblClose.Enabled := cdsSkills.Active;
-  SetupSkillEditBtns();
+
+  edtSkillFilter.Enabled := cdsSkills.Active;
+  btnSkillFilter.Enabled := cdsSkills.Active;
+
+	btnSkillUpdtDB.Enabled := cdsSkills.Active;
+  btnSkillAdd.Enabled := cdsSkills.Active;
+  btnSkillDel.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0);
+  btnSkillUpdt.Enabled := btnSkillDel.Enabled;
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
@@ -358,7 +347,7 @@ var
   s: String;
 begin
 	MessageDlg('Delete ?', mtConfirmation, mbOKCancel, 0);
-	SetupSkillEditBtns();
+	SetupSkillCtrls();
 end;
 
 procedure TfrmDBDemo.btnSkillUpdtClick(Sender: TObject);
@@ -379,7 +368,7 @@ procedure TfrmDBDemo.SetupEmpCtrls;
 begin
 	btnEmpTblOpen.Enabled := not cdsEmps.Active;
   btnEmpTblClose.Enabled := cdsEmps.Active;
-  btnFilterTbl.Enabled := cdsEmps.Active;
+  btnEmpFilter.Enabled := cdsEmps.Active;
   edtEmpFilter.Enabled := cdsEmps.Active;
 end;
 
