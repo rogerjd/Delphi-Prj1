@@ -38,9 +38,9 @@ object frmMain: TfrmMain
         Caption = 'Interface'
         OnClick = Interface1Click
       end
-      object DateTime1: TMenuItem
-        Caption = 'D&ate Time'
-        OnClick = DateTime1Click
+      object miStrFuncs: TMenuItem
+        Caption = '&String Funcs'
+        OnClick = miStrFuncsClick
       end
       object N1: TMenuItem
         Caption = '-'

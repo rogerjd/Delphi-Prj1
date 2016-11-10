@@ -10,17 +10,13 @@ uses
   frmIntfU in 'frmIntfU.pas' {frmIntf},
   Emp in 'Emp.pas',
   LangUnit in 'LangUnit.pas' {frmLang},
-  frmDemoUnit in 'frmDemoUnit.pas' {frmDemo};
+  frmDemoUnit in 'frmDemoUnit.pas' {frmDemo},
+  StringFuncs in 'StringFuncs.pas' {frmStrFuncs};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TfrmDBDemo, frmDBDemo);
-  Application.CreateForm(TfrmIntf, frmIntf);
-  Application.CreateForm(TfrmLang, frmLang);
-  Application.CreateForm(TfrmDemo, frmDemo);
   Application.Run;
 end.

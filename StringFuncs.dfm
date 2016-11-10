@@ -46,7 +46,7 @@ object frmStrFuncs: TfrmStrFuncs
     Top = 40
     Width = 75
     Height = 25
-    Caption = 'Format'
+    Caption = '&Format'
     TabOrder = 1
     OnClick = btnFmtClick
   end
