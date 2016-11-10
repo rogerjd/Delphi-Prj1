@@ -160,9 +160,9 @@ object frmDBDemo: TfrmDBDemo
       Top = 72
       Width = 75
       Height = 25
-      Caption = '&Filter'
+      Caption = 'Filter'
       TabOrder = 3
-      OnClick = btnEmpFilterClick
+      OnClick = btnSkillFilterClick
     end
   end
   object dbgdSkills: TDBGrid

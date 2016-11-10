@@ -80,6 +80,7 @@ type
     procedure btnSkillDelClick(Sender: TObject);
     procedure btnSkillUpdtClick(Sender: TObject);
     procedure btnEmpTblCloseClick(Sender: TObject);
+    procedure btnSkillFilterClick(Sender: TObject);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -135,8 +136,6 @@ begin
   cdsEmps.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('emp');
   cdsEmps.Open();
-
-//  ClientDataSet1.ap
 (*
   ShowMessage(BoolToStr(Query1.Active));
   ShowMessage(BoolToStr(Database1.Connected));
@@ -334,6 +333,7 @@ begin
   btnSkillTblClose.Enabled := cdsSkills.Active;
 
   edtSkillFilter.Enabled := cdsSkills.Active;
+	edtSkillFilter.Text := '';
   btnSkillFilter.Enabled := cdsSkills.Active;
 
 	btnSkillUpdtDB.Enabled := cdsSkills.Active;
@@ -368,6 +368,7 @@ procedure TfrmDBDemo.SetupEmpCtrls;
 begin
 	btnEmpTblOpen.Enabled := not cdsEmps.Active;
   btnEmpTblClose.Enabled := cdsEmps.Active;
+	edtEmpFilter.Text := '';
   btnEmpFilter.Enabled := cdsEmps.Active;
   edtEmpFilter.Enabled := cdsEmps.Active;
 end;
@@ -383,6 +384,14 @@ begin
       SetupEmpSkillsCtrls('');
     end;
   end;
+end;
+
+procedure TfrmDBDemo.btnSkillFilterClick(Sender: TObject);
+begin
+//todo: filter
+  cdsSkills.Close(); //must close, for new filter
+  SetEmpSkillsQryFilter('skill');
+  cdsSkills.Open();
 end;
 
 end.
