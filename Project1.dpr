@@ -10,7 +10,8 @@ uses
   frmIntfU in 'frmIntfU.pas' {frmIntf},
   Emp in 'Emp.pas',
   LangUnit in 'LangUnit.pas' {frmLang},
-  frmDemoUnit in 'frmDemoUnit.pas' {frmDemo};
+  frmDemoUnit in 'frmDemoUnit.pas' {frmDemo},
+  DateTime in 'DateTime.pas' {frmDateTime};
 
 {$R *.res}
 
@@ -22,5 +23,6 @@ begin
   Application.CreateForm(TfrmIntf, frmIntf);
   Application.CreateForm(TfrmLang, frmLang);
   Application.CreateForm(TfrmDemo, frmDemo);
+  Application.CreateForm(TfrmDateTime, frmDateTime);
   Application.Run;
 end.

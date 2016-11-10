@@ -16,11 +16,14 @@ type
     DataStructs: TMenuItem;
     Interface1: TMenuItem;
     mniForm: TMenuItem;
+    DateTime1: TMenuItem;
+    N1: TMenuItem;
     procedure Database1Click(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
     procedure DataStructsClick(Sender: TObject);
     procedure Interface1Click(Sender: TObject);
     procedure mniFormClick(Sender: TObject);
+    procedure DateTime1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -33,7 +36,7 @@ var
 implementation
 
 uses
-   DBDemo, frmDataStructs, frmIntfU, frmDemoUnit;
+   DBDemo, frmDataStructs, frmIntfU, frmDemoUnit, DateTime;
 
 {$R *.dfm}
 
@@ -74,6 +77,16 @@ begin
     frm.ShowModal();
   finally
     frm.Free();
+  end;
+end;
+
+procedure TfrmMain.DateTime1Click(Sender: TObject);
+begin
+  frmDateTime := TfrmDateTime.Create(nil);
+  try
+    frmDateTime.ShowModal();
+  finally
+		frmDateTime.Free();
   end;
 end;
 
