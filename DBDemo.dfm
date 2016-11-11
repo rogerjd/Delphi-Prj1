@@ -298,7 +298,8 @@ object frmDBDemo: TfrmDBDemo
       'select *'
       ' from'
       '  employee'
-      'where lastname like :p')
+      'where lastname like :p'
+      'order by lastname, firstname')
     Left = 128
     Top = 8
     ParamData = <
