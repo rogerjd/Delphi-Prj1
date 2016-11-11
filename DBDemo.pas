@@ -14,6 +14,11 @@ uses
 type
   TEmpSkill = (esEmp, esSkill);
 
+  TEmpSkillCtrl = class
+    //todo: fine grain methods instead of one catch all??
+    class procedure UpdtEditBtns;
+  end;
+
   TfrmDBDemo = class(TForm)
     Database1: TDatabase;
     qryEmps: TQuery;
@@ -81,6 +86,7 @@ type
     procedure btnSkillUpdtClick(Sender: TObject);
     procedure btnEmpTblCloseClick(Sender: TObject);
     procedure btnSkillFilterClick(Sender: TObject);
+    procedure dbgdEmpsTitleClick(Column: TColumn);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -206,6 +212,8 @@ begin
 //  cdsSkills.Open();
 end;
 
+//ref: some cases in here are redundant (ie: they could not have changed, so dont
+//	need updt. but it simpler to think about it this way, it just as fast.
 procedure TfrmDBDemo.SetupEmpSkillsCtrls(tbl: string);
 begin
   btnEmpSkill.Enabled := cdsEmpSkill.Active;
@@ -235,14 +243,13 @@ begin
   btnEmpSkillsUpdtDB.Enabled := cdsEmpSkill.Active;
 end;
 
+//todo: updt cnt, add
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
 var
   EmpID,
   SkillID: integer;
 
   function SkillExists(): Boolean;
-  var
-    b: Boolean;
   begin
     cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';
     Result := cdsEmpSkill.FindKey([EmpID, SkillID]);
@@ -310,9 +317,10 @@ begin
   ShowMessage(TableName);
 end;
 
+//todo: updt cnt, del
 procedure TfrmDBDemo.btnDelEmpSkillClick(Sender: TObject);
 begin
-  if cdsEmpSkill.RecNo < 1 then
+  if cdsEmpSkill.RecNo < 1 then   //todo: this case should be handled w/btn disable
   	exit;
   cdsEmpSkill.Delete();
 end;
@@ -343,8 +351,6 @@ begin
 end;
 
 procedure TfrmDBDemo.btnSkillDelClick(Sender: TObject);
-var
-  s: String;
 begin
 	MessageDlg('Delete ?', mtConfirmation, mbOKCancel, 0);
 	SetupSkillCtrls();
@@ -388,10 +394,25 @@ end;
 
 procedure TfrmDBDemo.btnSkillFilterClick(Sender: TObject);
 begin
-//todo: filter
   cdsSkills.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('skill');
   cdsSkills.Open();
+end;
+
+procedure TfrmDBDemo.dbgdEmpsTitleClick(Column: TColumn);
+begin
+  case Column.Index of
+      0: cdsEmps.IndexFieldNames := 'EmpNo';
+      1: cdsEmps.IndexFieldNames := 'LastName';
+      2: cdsEmps.IndexFieldNames := 'FirstName';
+    end;
+end;
+
+{ TEmpSkillCtrl }
+
+class procedure TEmpSkillCtrl.UpdtEditBtns;
+begin
+
 end;
 
 end.

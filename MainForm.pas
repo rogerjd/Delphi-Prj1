@@ -41,8 +41,6 @@ uses
 {$R *.dfm}
 
 procedure TfrmMain.Database1Click(Sender: TObject);
-var
-  n: Integer;
 begin
   frmDBDemo := TfrmDBDemo.Create(nil);
   frmDBDemo.ShowModal();

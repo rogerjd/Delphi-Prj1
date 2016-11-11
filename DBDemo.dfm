@@ -27,6 +27,23 @@ object frmDBDemo: TfrmDBDemo
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+    OnTitleClick = dbgdEmpsTitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'EmpNo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'LastName'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'FirstName'
+        Visible = True
+      end>
   end
   object Button1: TButton
     Left = 24
@@ -287,6 +304,7 @@ object frmDBDemo: TfrmDBDemo
   end
   object Database1: TDatabase
     AliasName = 'DBDEMOS'
+    Connected = True
     DatabaseName = 'Database1'
     SessionName = 'Default'
     Left = 8
