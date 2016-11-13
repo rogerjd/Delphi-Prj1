@@ -320,8 +320,6 @@ end;
 
 procedure TfrmDBDemo.btnDelEmpSkillClick(Sender: TObject);
 begin
-  if cdsEmpSkill.RecNo < 1 then   //todo: this case should be handled w/btn disable, done yet?
-  	exit;
   cdsEmpSkill.Delete();
   SetupEmpSkillsCtrls();
 end;
