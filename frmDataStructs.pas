@@ -329,7 +329,6 @@ begin
 //  ShowMessage(s[0]);  index 0 is not allowed (use SetLength, Length)
 
   ShowMessage(Reverse('abc'));
-
 end;
 
 end.

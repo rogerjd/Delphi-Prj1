@@ -12,7 +12,7 @@ uses
   DBCtrls;
 
 type
-  TEmpSkill = (esEmp, esSkill);
+  TEmpSkill = (esEmp, esSkill, esNone);
 
   TEmpSkillCtrl = class
     //todo: fine grain methods instead of one catch all??
@@ -91,7 +91,7 @@ type
     EmpSkillMode: TEmpSkill;
     { Private declarations }
     procedure SetEmpSkillsQryFilter(tbl: string);
-    procedure SetupEmpSkillsCtrls(tbl: string);
+    procedure SetupEmpSkillsCtrls();
     procedure HideEmpSkillsGridCols();
 
     procedure SetupSkillCtrls();
@@ -177,7 +177,7 @@ begin
   qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
   cdsEmpSkill.Open();
   EmpSkillMode := esEmp;
-  SetupEmpSkillsCtrls('emp');
+  SetupEmpSkillsCtrls();
   HideEmpSkillsGridCols();
 end;
 
@@ -197,7 +197,7 @@ begin
   qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
   cdsEmpSkill.Open();
   EmpSkillMode := esSkill;
-  SetupEmpSkillsCtrls('skill');
+  SetupEmpSkillsCtrls();
   HideEmpSkillsGridCols();
 end;
 
@@ -214,27 +214,28 @@ end;
 
 //ref: some cases in here are redundant (ie: they could not have changed, so dont
 //	need updt. but it simpler to think about it this way, it just as fast.
-procedure TfrmDBDemo.SetupEmpSkillsCtrls(tbl: string);
+procedure TfrmDBDemo.SetupEmpSkillsCtrls();
 begin
   btnEmpSkill.Enabled := cdsEmpSkill.Active;
   btnSkillEmps.Enabled := cdsEmpSkill.Active;
 
   btnDelEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmpSkill.RecordCount > 0);
 
-  if tbl = 'emp' then begin
+  if EmpSkillMode = esEmp then begin
     btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0;
 
     lblResult.Caption := cdsEmps.FieldByName('LastName').Value + 'Num Skills: ' +
     	IntToStr(cdsEmpSkill.RecordCount);
     gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + cdsEmps.FieldByName('LastName').Value;
   end
-  else if tbl = 'skill' then begin
+  else if EmpSkillMode = esSkill then begin
     btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0;
     lblResult.Caption := cdsSkills.FieldByName('Skill').Value + '  Num Employees: ' +
       IntToStr(cdsEmpSkill.RecordCount);
     gbxUpdtEmpSkill.Caption := 'Employees with Skill: ' + cdsSkills.FieldByName('Skill').Value;
   end
-  else begin
+  else if EmpSkillMode = esNone then
+  begin
   	btnAddEmpSkill.Enabled := False;
     lblResult.Caption := '';
     gbxUpdtEmpSkill.Caption := '';
@@ -243,7 +244,6 @@ begin
   btnEmpSkillsUpdtDB.Enabled := cdsEmpSkill.Active;
 end;
 
-//todo: updt cnt, add
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
 var
   EmpID,
@@ -281,6 +281,7 @@ begin
   except
     cdsEmpSkill.Cancel();
   end;
+  SetupEmpSkillsCtrls();
 end;
 
 //these hold the PK, dont show
@@ -317,12 +318,12 @@ begin
   ShowMessage(TableName);
 end;
 
-//todo: updt cnt, del
 procedure TfrmDBDemo.btnDelEmpSkillClick(Sender: TObject);
 begin
-  if cdsEmpSkill.RecNo < 1 then   //todo: this case should be handled w/btn disable
+  if cdsEmpSkill.RecNo < 1 then   //todo: this case should be handled w/btn disable, done yet?
   	exit;
   cdsEmpSkill.Delete();
+  SetupEmpSkillsCtrls();
 end;
 
 procedure TfrmDBDemo.btnSkillAddClick(Sender: TObject);
@@ -387,7 +388,8 @@ begin
   	if cdsEmpSkill.Active then
     begin
     	cdsEmpSkill.Close();
-      SetupEmpSkillsCtrls('');
+      EmpSkillMode := esNone;
+      SetupEmpSkillsCtrls();
     end;
   end;
 end;
@@ -402,10 +404,10 @@ end;
 procedure TfrmDBDemo.dbgdEmpsTitleClick(Column: TColumn);
 begin
   case Column.Index of
-      0: cdsEmps.IndexFieldNames := 'EmpNo';
-      1: cdsEmps.IndexFieldNames := 'LastName';
-      2: cdsEmps.IndexFieldNames := 'FirstName';
-    end;
+    0: cdsEmps.IndexFieldNames := 'EmpNo';
+    1: cdsEmps.IndexFieldNames := 'LastName';
+    2: cdsEmps.IndexFieldNames := 'FirstName';
+  end;
 end;
 
 { TEmpSkillCtrl }
