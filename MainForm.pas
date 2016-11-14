@@ -18,12 +18,14 @@ type
     mniForm: TMenuItem;
     miStrFuncs: TMenuItem;
     N1: TMenuItem;
+    miLangFuncs: TMenuItem;
     procedure Database1Click(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
     procedure DataStructsClick(Sender: TObject);
     procedure Interface1Click(Sender: TObject);
     procedure mniFormClick(Sender: TObject);
     procedure miStrFuncsClick(Sender: TObject);
+    procedure miLangFuncsClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,7 +38,7 @@ var
 implementation
 
 uses
-   DBDemo, frmDataStructs, frmIntfU, frmDemoUnit, StringFuncs;
+   DBDemo, frmDataStructs, frmIntfU, frmDemoUnit, StringFuncs, LangFuncs;
 
 {$R *.dfm}
 
@@ -86,6 +88,17 @@ begin
   finally
 		frmStrFuncs.Free();
   end;
+end;
+
+procedure TfrmMain.miLangFuncsClick(Sender: TObject);
+begin
+  frmLangFuncs := TfrmLangFuncs.Create(nil);
+  try
+		frmLangFuncs.ShowModal();
+  finally
+    frmLangFuncs.Free;
+  end;
+
 end;
 
 end.

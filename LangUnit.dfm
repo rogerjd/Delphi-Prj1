@@ -13,4 +13,13 @@ object frmLang: TfrmLang
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object bbtnParams: TButton
+    Left = 112
+    Top = 296
+    Width = 75
+    Height = 25
+    Caption = 'Params'
+    TabOrder = 0
+    OnClick = bbtnParamsClick
+  end
 end

@@ -42,6 +42,10 @@ object frmMain: TfrmMain
         Caption = '&String Funcs'
         OnClick = miStrFuncsClick
       end
+      object miLangFuncs: TMenuItem
+        Caption = 'Lang Funcs'
+        OnClick = miLangFuncsClick
+      end
       object N1: TMenuItem
         Caption = '-'
       end

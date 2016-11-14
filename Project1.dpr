@@ -9,7 +9,7 @@ uses
   DBDemo in 'DBDemo.pas' {frmDBDemo},
   frmIntfU in 'frmIntfU.pas' {frmIntf},
   Emp in 'Emp.pas',
-  LangUnit in 'LangUnit.pas' {frmLang},
+  LangFuncs in 'LangFuncs.pas' {frmLangFuncs},
   frmDemoUnit in 'frmDemoUnit.pas' {frmDemo},
   StringFuncs in 'StringFuncs.pas' {frmStrFuncs};
 
