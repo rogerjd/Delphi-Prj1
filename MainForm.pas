@@ -38,7 +38,7 @@ var
 implementation
 
 uses
-   DBDemo, frmDataStructs, frmIntfU, frmDemoUnit, StringFuncs, LangFuncs;
+   DBDemo, frmDataStructs, frmIntfU, FormCtrl, StringFuncs, LangFuncs;
 
 {$R *.dfm}
 
@@ -70,9 +70,9 @@ end;
 
 procedure TfrmMain.mniFormClick(Sender: TObject);
 var
-  frm: TfrmDemo;
+  frm: TfrmFormCtrl;
 begin
-  frm := TfrmDemo.Create(nil);
+  frm := TfrmFormCtrl.Create(nil);
   try
     frm.ShowModal();
   finally
@@ -98,7 +98,6 @@ begin
   finally
     frmLangFuncs.Free;
   end;
-
 end;
 
 end.

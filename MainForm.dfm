@@ -20,7 +20,7 @@ object frmMain: TfrmMain
     object File1: TMenuItem
       Caption = 'File'
       object mniForm: TMenuItem
-        Caption = 'Form'
+        Caption = 'Form, Ctrls'
         OnClick = mniFormClick
       end
       object Database1: TMenuItem

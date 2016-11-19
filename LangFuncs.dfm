@@ -22,4 +22,13 @@ object frmLangFuncs: TfrmLangFuncs
     TabOrder = 0
     OnClick = bbtnParamsClick
   end
+  object btnExcept: TButton
+    Left = 200
+    Top = 296
+    Width = 75
+    Height = 25
+    Caption = 'Exception'
+    TabOrder = 1
+    OnClick = btnExceptClick
+  end
 end

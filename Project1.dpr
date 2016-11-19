@@ -10,7 +10,7 @@ uses
   frmIntfU in 'frmIntfU.pas' {frmIntf},
   Emp in 'Emp.pas',
   LangFuncs in 'LangFuncs.pas' {frmLangFuncs},
-  frmDemoUnit in 'frmDemoUnit.pas' {frmDemo},
+  FormCtrl in 'FormCtrl.pas' {frmFormCtrl},
   StringFuncs in 'StringFuncs.pas' {frmStrFuncs};
 
 {$R *.res}
