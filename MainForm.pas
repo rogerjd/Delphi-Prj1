@@ -69,14 +69,12 @@ begin
 end;
 
 procedure TfrmMain.mniFormClick(Sender: TObject);
-var
-  frm: TfrmFormCtrl;
 begin
-  frm := TfrmFormCtrl.Create(nil);
+  frmFormCtrl := TfrmFormCtrl.Create(nil);
   try
-    frm.ShowModal();
+    frmFormCtrl.ShowModal();
   finally
-    frm.Free();
+    frmFormCtrl.Free();
   end;
 end;
 

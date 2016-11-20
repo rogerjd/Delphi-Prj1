@@ -79,3 +79,4 @@ object frmFormCtrl: TfrmFormCtrl
     OnClick = btnCtrlsClick
   end
 end
+

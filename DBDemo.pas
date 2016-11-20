@@ -87,6 +87,9 @@ type
     procedure btnEmpTblCloseClick(Sender: TObject);
     procedure btnSkillFilterClick(Sender: TObject);
     procedure dbgdEmpsTitleClick(Column: TColumn);
+    procedure cdsEmpSkillReconcileError(DataSet: TCustomClientDataSet;
+      E: EReconcileError; UpdateKind: TUpdateKind;
+      var Action: TReconcileAction);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -223,7 +226,7 @@ begin
 
   if EmpSkillMode = esEmp then begin
     btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0;
-
+//todo: bug: qry is showing results for another emp
     lblResult.Caption := cdsEmps.FieldByName('LastName').Value + 'Num Skills: ' +
     	IntToStr(cdsEmpSkill.RecordCount);
     gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + cdsEmps.FieldByName('LastName').Value;
@@ -251,13 +254,13 @@ var
 
   function SkillExists(): Boolean;
   begin
-    cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';
+    cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';  //todo: dup: need EmpID? must be one emp
     Result := cdsEmpSkill.FindKey([EmpID, SkillID]);
     cdsEmpSkill.IndexFieldNames := '';
   end;
 
 begin
-  EmpID := cdsEmps.FieldByName('EmpNo').AsInteger;
+  EmpID := cdsEmps.FieldByName('EmpNo').AsInteger;  //todo: dup: bug, this is cdsEmps, not qryEmpSkill
   SkillID := cdsSkills.FieldByName('SkillID').AsInteger;
 
   if SkillExists() then begin
@@ -277,7 +280,8 @@ begin
       esSkill: cdsEmpSkill.FieldByName('LastName').Value := cdsEmps.FieldByName('LastName').Value;
     end;
 
-  	cdsEmpSkill.Post;
+  	cdsEmpSkill.Post;  //todo: dup: can add a rec that does not meet qry?? (incs rec count)
+    //todo: dup: bug: shows results for 2 emps(skill dup'd) should be one emp > skills or skill > emps
   except
     cdsEmpSkill.Cancel();
   end;
@@ -295,7 +299,10 @@ procedure TfrmDBDemo.btnEmpSkillsUpdtDBClick(Sender: TObject);
 var
   n: Integer;
 begin
-  n := cdsEmpSkill.ApplyUpdates(0);
+	if cdsEmpSkill.ChangeCount > 0 then
+  begin
+  	n := cdsEmpSkill.ApplyUpdates(0);
+  end;
 end;
 
 procedure TfrmDBDemo.dspEmpSkillUpdateData(Sender: TObject;
@@ -413,6 +420,13 @@ end;
 class procedure TEmpSkillCtrl.UpdtEditBtns;
 begin
 
+end;
+
+procedure TfrmDBDemo.cdsEmpSkillReconcileError(
+ DataSet: TCustomClientDataSet; E: EReconcileError;
+  UpdateKind: TUpdateKind; var Action: TReconcileAction);
+begin
+//
 end;
 
 end.

@@ -402,6 +402,7 @@ object frmDBDemo: TfrmDBDemo
     Aggregates = <>
     Params = <>
     ProviderName = 'dspEmpSkill'
+    OnReconcileError = cdsEmpSkillReconcileError
     Left = 448
     Top = 8
   end
