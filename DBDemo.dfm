@@ -1,6 +1,6 @@
 object frmDBDemo: TfrmDBDemo
-  Left = 219
-  Top = 314
+  Left = 232
+  Top = 270
   Width = 979
   Height = 481
   Caption = 'frmDBDemo'
@@ -302,6 +302,15 @@ object frmDBDemo: TfrmDBDemo
       OnClick = btnSkillUpdtClick
     end
   end
+  object btnExcept: TButton
+    Left = 576
+    Top = 408
+    Width = 75
+    Height = 25
+    Caption = 'Exception'
+    TabOrder = 11
+    OnClick = btnExceptClick
+  end
   object Database1: TDatabase
     AliasName = 'DBDEMOS'
     Connected = True
@@ -415,5 +424,11 @@ object frmDBDemo: TfrmDBDemo
     DataSet = cdsSkills
     Left = 664
     Top = 160
+  end
+  object tblEmps: TTable
+    DatabaseName = 'DBDEMOS'
+    TableName = 'employee.db'
+    Left = 536
+    Top = 408
   end
 end

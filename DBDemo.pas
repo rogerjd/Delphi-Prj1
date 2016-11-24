@@ -63,6 +63,8 @@ type
     btnSkillAdd: TButton;
     btnSkillUpdtDB: TButton;
     btnSkillUpdt: TButton;
+    btnExcept: TButton;
+    tblEmps: TTable;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -90,6 +92,7 @@ type
     procedure cdsEmpSkillReconcileError(DataSet: TCustomClientDataSet;
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
+    procedure btnExceptClick(Sender: TObject);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -427,6 +430,22 @@ procedure TfrmDBDemo.cdsEmpSkillReconcileError(
   UpdateKind: TUpdateKind; var Action: TReconcileAction);
 begin
 //
+end;
+
+procedure TfrmDBDemo.btnExceptClick(Sender: TObject);
+begin
+	tblEmps.Open();
+  try
+    tblEmps.Insert();
+    tblEmps.FieldByName('Salary').AsString := '12x3.34';
+    tblEmps.Post();
+  except
+  	on E: Exception do
+    begin
+    	ShowMessage(E.Message);
+    end;
+  end;
+  tblEmps.Close();
 end;
 
 end.
