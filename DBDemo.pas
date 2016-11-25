@@ -229,7 +229,7 @@ begin
 
   if EmpSkillMode = esEmp then begin
     btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0;
-//todo: bug: qry is showing results for another emp
+//todo: bug: qry is showing results for another emp (inconsistent result)
     lblResult.Caption := cdsEmps.FieldByName('LastName').Value + 'Num Skills: ' +
     	IntToStr(cdsEmpSkill.RecordCount);
     gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + cdsEmps.FieldByName('LastName').Value;
