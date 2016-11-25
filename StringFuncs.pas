@@ -32,7 +32,7 @@ procedure TfrmStrFuncs.btnFmtClick(Sender: TObject);
 var
   dt: TDateTime;
 begin
-	dt := StrtoDate('11/09/2016');
+	dt := StrToDate('11/09/2016');
 	ShowMessage(FormatDateTime('mm/dd/yyyy', dt));
 end;
 
