@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons;
+  Dialogs, StdCtrls, Buttons, FrameTst;
 
 type
   TfrmFormCtrl = class(TForm)
@@ -13,11 +13,13 @@ type
     btnFocus: TButton;
     Edit1: TEdit;
     btnCtrls: TButton;
+    Frame11: TFrame1;
     procedure BitBtn1Click(Sender: TObject);
     procedure btnPositionClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnFocusClick(Sender: TObject);
     procedure btnCtrlsClick(Sender: TObject);
+    procedure Frame11Edit1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -62,6 +64,11 @@ begin
   ShowMessage(IntToStr(ComponentCount));
 
   o := Controls[0];
+end;
+
+procedure TfrmFormCtrl.Frame11Edit1Click(Sender: TObject);
+begin
+  ShowMessage(Frame11.Edit1.Text);
 end;
 
 end.

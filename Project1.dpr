@@ -11,7 +11,8 @@ uses
   Emp in 'Emp.pas',
   LangFuncs in 'LangFuncs.pas' {frmLangFuncs},
   FormCtrl in 'FormCtrl.pas' {frmFormCtrl},
-  StringFuncs in 'StringFuncs.pas' {frmStrFuncs};
+  StringFuncs in 'StringFuncs.pas' {frmStrFuncs},
+  FrameTst in 'FrameTst.pas' {Frame1: TFrame};
 
 {$R *.res}
 

@@ -78,5 +78,14 @@ object frmFormCtrl: TfrmFormCtrl
     TabOrder = 4
     OnClick = btnCtrlsClick
   end
+  inline Frame11: TFrame1
+    Left = 392
+    Top = 8
+    Width = 289
+    Height = 177
+    TabOrder = 5
+    inherited Edit1: TEdit
+      OnClick = Frame11Edit1Click
+    end
+  end
 end
-

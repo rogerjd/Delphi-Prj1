@@ -10,8 +10,10 @@ type
   TfrmLangFuncs = class(TForm)
     bbtnParams: TButton;
     btnExcept: TButton;
+    btnPtr: TButton;
     procedure bbtnParamsClick(Sender: TObject);
     procedure btnExceptClick(Sender: TObject);
+    procedure btnPtrClick(Sender: TObject);
   private
     { Private declarations }
     procedure CaseTst();
@@ -22,6 +24,8 @@ type
     procedure constParam(const x: integer);
     procedure outParam(out x: integer);
     procedure ExceptionTst();
+    procedure PointerTst();
+    class procedure TstClassStatic();
   public
     { Public declarations }
   end;
@@ -124,6 +128,34 @@ begin
    ShowMessage('exception caught');   //flow continues onward
  end;
 
+end;
+
+class procedure TfrmLangFuncs.TstClassStatic;
+begin
+//
+end;
+
+type
+  ps = ^String;
+
+procedure GetColor(ptr: ps);
+begin
+	ptr^ := 'abc123';
+end;
+
+procedure TfrmLangFuncs.PointerTst;
+var
+  str: String;
+begin
+  GetColor(Addr(str)); //will work with Modal frm, too. just pass ptr in ctor. if
+  //frm is freed, can read the str pointed to. if frm is still active, then just
+  //read a reg prop/fld/func (dont need ptr)
+  ShowMessage(str);
+end;
+
+procedure TfrmLangFuncs.btnPtrClick(Sender: TObject);
+begin
+  PointerTst;
 end;
 
 end.

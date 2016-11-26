@@ -31,4 +31,13 @@ object frmLangFuncs: TfrmLangFuncs
     TabOrder = 1
     OnClick = btnExceptClick
   end
+  object btnPtr: TButton
+    Left = 344
+    Top = 296
+    Width = 75
+    Height = 25
+    Caption = 'Pointer'
+    TabOrder = 2
+    OnClick = btnPtrClick
+  end
 end
