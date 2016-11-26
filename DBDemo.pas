@@ -65,6 +65,14 @@ type
     btnSkillUpdt: TButton;
     btnExcept: TButton;
     tblEmps: TTable;
+    DBText1: TDBText;
+    cdsEmpsEmpFullName: TStringField;
+    cdsEmpsEmpNo: TIntegerField;
+    cdsEmpsLastName: TStringField;
+    cdsEmpsFirstName: TStringField;
+    cdsEmpsPhoneExt: TStringField;
+    cdsEmpsHireDate: TDateTimeField;
+    cdsEmpsSalary: TFloatField;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -93,6 +101,7 @@ type
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
     procedure btnExceptClick(Sender: TObject);
+    procedure cdsEmpsCalcFields(DataSet: TDataSet);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -446,6 +455,13 @@ begin
     end;
   end;
   tblEmps.Close();
+end;
+
+procedure TfrmDBDemo.cdsEmpsCalcFields(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('EmpFullName').Value :=
+  	DataSet.fieldbyName('FirstName').Value + ' ' +
+  	DataSet.fieldbyName('LastName').Value;
 end;
 
 end.

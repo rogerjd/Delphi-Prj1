@@ -15,6 +15,15 @@ object frmDBDemo: TfrmDBDemo
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
+  object DBText1: TDBText
+    Left = 8
+    Top = 288
+    Width = 42
+    Height = 13
+    AutoSize = True
+    DataField = 'EmpFullName'
+    DataSource = dsEmps
+  end
   object dbgdEmps: TDBGrid
     Left = 8
     Top = 160
@@ -42,6 +51,7 @@ object frmDBDemo: TfrmDBDemo
       item
         Expanded = False
         FieldName = 'FirstName'
+        Width = 64
         Visible = True
       end>
   end
@@ -351,8 +361,34 @@ object frmDBDemo: TfrmDBDemo
     Aggregates = <>
     Params = <>
     ProviderName = 'dspEmps'
+    OnCalcFields = cdsEmpsCalcFields
     Left = 216
     Top = 8
+    object cdsEmpsEmpFullName: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'EmpFullName'
+      Calculated = True
+    end
+    object cdsEmpsEmpNo: TIntegerField
+      FieldName = 'EmpNo'
+    end
+    object cdsEmpsLastName: TStringField
+      FieldName = 'LastName'
+    end
+    object cdsEmpsFirstName: TStringField
+      FieldName = 'FirstName'
+      Size = 15
+    end
+    object cdsEmpsPhoneExt: TStringField
+      FieldName = 'PhoneExt'
+      Size = 4
+    end
+    object cdsEmpsHireDate: TDateTimeField
+      FieldName = 'HireDate'
+    end
+    object cdsEmpsSalary: TFloatField
+      FieldName = 'Salary'
+    end
   end
   object dspEmps: TDataSetProvider
     DataSet = qryEmps
