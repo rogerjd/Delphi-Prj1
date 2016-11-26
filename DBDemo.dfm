@@ -51,7 +51,6 @@ object frmDBDemo: TfrmDBDemo
       item
         Expanded = False
         FieldName = 'FirstName'
-        Width = 64
         Visible = True
       end>
   end
@@ -320,6 +319,28 @@ object frmDBDemo: TfrmDBDemo
     Caption = 'Exception'
     TabOrder = 11
     OnClick = btnExceptClick
+  end
+  object DBLookupComboBox1: TDBLookupComboBox
+    Left = 176
+    Top = 304
+    Width = 145
+    Height = 21
+    DataField = 'SkillID'
+    DataSource = dsEmpSkill
+    KeyField = 'SkillID'
+    ListField = 'Skill'
+    ListSource = dsSkills
+    TabOrder = 12
+  end
+  object DBLookupListBox1: TDBLookupListBox
+    Left = 256
+    Top = 328
+    Width = 121
+    Height = 95
+    DataField = 'Skill'
+    DataSource = dsSkills
+    ListField = 'Skill'
+    TabOrder = 13
   end
   object Database1: TDatabase
     AliasName = 'DBDEMOS'

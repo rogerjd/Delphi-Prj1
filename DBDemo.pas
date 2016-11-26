@@ -73,6 +73,8 @@ type
     cdsEmpsPhoneExt: TStringField;
     cdsEmpsHireDate: TDateTimeField;
     cdsEmpsSalary: TFloatField;
+    DBLookupComboBox1: TDBLookupComboBox;
+    DBLookupListBox1: TDBLookupListBox;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -303,8 +305,8 @@ end;
 //these hold the PK, dont show
 procedure TfrmDBDemo.HideEmpSkillsGridCols;
 begin
-  dbgEmpSkills.Columns[0].Visible := False;
-  dbgEmpSkills.Columns[1].Visible := False;
+//  dbgEmpSkills.Columns[0].Visible := False;
+//  dbgEmpSkills.Columns[1].Visible := False;
 end;
 
 procedure TfrmDBDemo.btnEmpSkillsUpdtDBClick(Sender: TObject);
