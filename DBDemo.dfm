@@ -1,6 +1,6 @@
 object frmDBDemo: TfrmDBDemo
-  Left = 247
-  Top = 358
+  Left = 243
+  Top = 324
   Width = 979
   Height = 481
   Caption = 'frmDBDemo'
@@ -22,14 +22,13 @@ object frmDBDemo: TfrmDBDemo
     Height = 13
     AutoSize = True
     DataField = 'EmpFullName'
-    DataSource = dsEmps
   end
   object dbgdEmps: TDBGrid
     Left = 8
     Top = 160
     Width = 313
     Height = 120
-    DataSource = dsEmps
+    DataSource = dmMain.dsEmps
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -46,6 +45,7 @@ object frmDBDemo: TfrmDBDemo
       item
         Expanded = False
         FieldName = 'LastName'
+        Width = 64
         Visible = True
       end
       item
@@ -196,7 +196,7 @@ object frmDBDemo: TfrmDBDemo
     Top = 160
     Width = 320
     Height = 120
-    DataSource = dsSkills
+    DataSource = dmMain.dsSkills
     TabOrder = 6
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -218,7 +218,7 @@ object frmDBDemo: TfrmDBDemo
     Top = 160
     Width = 225
     Height = 120
-    DataSource = dsEmpSkill
+    DataSource = dmMain.dsEmpSkill
     ReadOnly = True
     TabOrder = 8
     TitleFont.Charset = DEFAULT_CHARSET
@@ -326,10 +326,10 @@ object frmDBDemo: TfrmDBDemo
     Width = 145
     Height = 21
     DataField = 'SkillID'
-    DataSource = dsEmpSkill
+    DataSource = dmMain.dsEmpSkill
     KeyField = 'SkillID'
     ListField = 'Skill'
-    ListSource = dsSkills
+    ListSource = dmMain.dsSkills
     TabOrder = 12
   end
   object DBLookupListBox1: TDBLookupListBox
@@ -338,34 +338,11 @@ object frmDBDemo: TfrmDBDemo
     Width = 121
     Height = 95
     DataField = 'Skill'
-    DataSource = dsSkills
+    DataSource = dmMain.dsEmpSkill
+    KeyField = 'Skill'
     ListField = 'Skill'
+    ListSource = dmMain.dsSkills
     TabOrder = 13
-  end
-  object Database1: TDatabase
-    AliasName = 'DBDEMOS'
-    Connected = True
-    DatabaseName = 'Database1'
-    SessionName = 'Default'
-    Left = 8
-    Top = 8
-  end
-  object qryEmps: TQuery
-    DatabaseName = 'Database1'
-    SQL.Strings = (
-      'select *'
-      ' from'
-      '  employee'
-      'where lastname like :p'
-      'order by lastname, firstname')
-    Left = 128
-    Top = 8
-    ParamData = <
-      item
-        DataType = ftString
-        Name = 'p'
-        ParamType = ptInput
-      end>
   end
   object Table1: TTable
     DatabaseName = 'Database1'
@@ -373,119 +350,10 @@ object frmDBDemo: TfrmDBDemo
     Left = 40
     Top = 456
   end
-  object dsEmps: TDataSource
-    DataSet = cdsEmps
-    Left = 248
-    Top = 152
-  end
-  object cdsEmps: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspEmps'
-    OnCalcFields = cdsEmpsCalcFields
-    Left = 216
-    Top = 8
-    object cdsEmpsEmpFullName: TStringField
-      FieldKind = fkCalculated
-      FieldName = 'EmpFullName'
-      Calculated = True
-    end
-    object cdsEmpsEmpNo: TIntegerField
-      FieldName = 'EmpNo'
-    end
-    object cdsEmpsLastName: TStringField
-      FieldName = 'LastName'
-    end
-    object cdsEmpsFirstName: TStringField
-      FieldName = 'FirstName'
-      Size = 15
-    end
-    object cdsEmpsPhoneExt: TStringField
-      FieldName = 'PhoneExt'
-      Size = 4
-    end
-    object cdsEmpsHireDate: TDateTimeField
-      FieldName = 'HireDate'
-    end
-    object cdsEmpsSalary: TFloatField
-      FieldName = 'Salary'
-    end
-  end
-  object dspEmps: TDataSetProvider
-    DataSet = qryEmps
-    Constraints = True
-    Left = 168
-    Top = 8
-  end
-  object qrySkills: TQuery
-    DatabaseName = 'Database1'
-    SQL.Strings = (
-      'select *'
-      ' from'
-      '  skills'
-      'where skill like :p'
-      '')
-    Left = 640
-    Top = 16
-    ParamData = <
-      item
-        DataType = ftString
-        Name = 'p'
-        ParamType = ptInput
-      end>
-  end
-  object dspSkills: TDataSetProvider
-    DataSet = qrySkills
-    Constraints = True
-    UpdateMode = upWhereKeyOnly
-    Left = 680
-    Top = 16
-  end
-  object cdsSkills: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspSkills'
-    Left = 728
-    Top = 16
-  end
-  object qryEmpSkill: TQuery
-    DatabaseName = 'Database1'
-    SQL.Strings = (
-      '')
-    Left = 360
-    Top = 8
-  end
-  object dspEmpSkill: TDataSetProvider
-    DataSet = qryEmpSkill
-    Constraints = True
-    UpdateMode = upWhereKeyOnly
-    OnUpdateData = dspEmpSkillUpdateData
-    OnGetTableName = dspEmpSkillGetTableName
-    Left = 400
-    Top = 8
-  end
-  object cdsEmpSkill: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspEmpSkill'
-    OnReconcileError = cdsEmpSkillReconcileError
-    Left = 448
-    Top = 8
-  end
-  object dsEmpSkill: TDataSource
-    DataSet = cdsEmpSkill
-    Left = 360
-    Top = 208
-  end
-  object dsSkills: TDataSource
-    DataSet = cdsSkills
-    Left = 664
-    Top = 160
-  end
   object tblEmps: TTable
     DatabaseName = 'DBDEMOS'
     TableName = 'employee.db'
-    Left = 536
-    Top = 408
+    Left = 456
+    Top = 398
   end
 end

@@ -20,13 +20,8 @@ type
   end;
 
   TfrmDBDemo = class(TForm)
-    Database1: TDatabase;
-    qryEmps: TQuery;
     Table1: TTable;
     dbgdEmps: TDBGrid;
-    dsEmps: TDataSource;
-    cdsEmps: TClientDataSet;
-    dspEmps: TDataSetProvider;
     Button1: TButton;
     Button2: TButton;
     btnEmpTblOpen: TButton;
@@ -43,14 +38,6 @@ type
     dbgdSkills: TDBGrid;
     btnEmpSkill: TButton;
     btnSkillEmps: TButton;
-    qrySkills: TQuery;
-    dspSkills: TDataSetProvider;
-    cdsSkills: TClientDataSet;
-    qryEmpSkill: TQuery;
-    dspEmpSkill: TDataSetProvider;
-    cdsEmpSkill: TClientDataSet;
-    dsEmpSkill: TDataSource;
-    dsSkills: TDataSource;
     Button3: TButton;
     dbgEmpSkills: TDBGrid;
     lblResult: TLabel;
@@ -64,17 +51,10 @@ type
     btnSkillUpdtDB: TButton;
     btnSkillUpdt: TButton;
     btnExcept: TButton;
-    tblEmps: TTable;
     DBText1: TDBText;
-    cdsEmpsEmpFullName: TStringField;
-    cdsEmpsEmpNo: TIntegerField;
-    cdsEmpsLastName: TStringField;
-    cdsEmpsFirstName: TStringField;
-    cdsEmpsPhoneExt: TStringField;
-    cdsEmpsHireDate: TDateTimeField;
-    cdsEmpsSalary: TFloatField;
     DBLookupComboBox1: TDBLookupComboBox;
     DBLookupListBox1: TDBLookupListBox;
+    tblEmps: TTable;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -124,6 +104,9 @@ var
 
 implementation
 
+uses
+  DataMod;
+
 {$R *.dfm}
 
 procedure TfrmDBDemo.Button2Click(Sender: TObject);
@@ -141,7 +124,7 @@ end;
 procedure TfrmDBDemo.btnEmpTblOpenClick(Sender: TObject);
 begin
   SetEmpSkillsQryFilter('emp');
-  cdsEmps.Open();
+  dmMain.cdsEmps.Open();
 //  ShowMessage(BoolToStr(Database1.Connected));
 	SetupEmpCtrls();
   EmpSkillsTblCtrl();
@@ -149,16 +132,16 @@ end;
 
 procedure TfrmDBDemo.btnSkillTblCloseClick(Sender: TObject);
 begin
-  cdsSkills.Close();
+  dmMain.cdsSkills.Close();
   SetupSkillCtrls();
   EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.btnEmpFilterClick(Sender: TObject);
 begin
-  cdsEmps.Close(); //must close, for new filter
+  dmMain.cdsEmps.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('emp');
-  cdsEmps.Open();
+  dmMain.cdsEmps.Open();
 (*
   ShowMessage(BoolToStr(Query1.Active));
   ShowMessage(BoolToStr(Database1.Connected));
@@ -168,31 +151,31 @@ end;
 procedure TfrmDBDemo.SetEmpSkillsQryFilter(tbl: string);
 begin
   if tbl = 'emp' then
-    qryEmps.Params[0].Value := edtEmpFilter.Text + '%'
+    dmMain.qryEmps.Params[0].Value := edtEmpFilter.Text + '%'
   else if tbl = 'skill' then
-    qrySkills.Params[0].Value := edtSkillFilter.Text + '%'
+    dmMain.qrySkills.Params[0].Value := edtSkillFilter.Text + '%'
 end;
 
 procedure TfrmDBDemo.btnSkillTblOpenClick(Sender: TObject);
 begin
   SetEmpSkillsQryFilter('skill');
-  cdsSkills.Open();
+  dmMain.cdsSkills.Open();
 	SetupSkillCtrls();
   EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.Button3Click(Sender: TObject);
 begin
-  ShowMessage(cdsEmps.FieldByName('EmpNo').Value);
+  ShowMessage(dmMain.cdsEmps.FieldByName('EmpNo').Value);
 end;
 
 procedure TfrmDBDemo.btnEmpSkillClick(Sender: TObject);
 begin
-  qryEmpSkill.SQL.Clear();
-  cdsEmpSkill.Close();
-  qryEmpSkill.SQL.Add('select EmpID, e.SkillID, skill from empSkills e, skills s where (e.EmpID = :eid) and s.SkillID = e.SkillID');
-  qryEmpSkill.Params[0].Value := cdsEmps.FieldByName('EmpNo').AsInteger;
-  cdsEmpSkill.Open();
+  dmMain.qryEmpSkill.SQL.Clear();
+  dmMain.cdsEmpSkill.Close();
+  dmMain.qryEmpSkill.SQL.Add('select EmpID, e.SkillID, skill, skillLevel from empSkills e, skills s where (e.EmpID = :eid) and s.SkillID = e.SkillID');
+  dmMain.qryEmpSkill.Params[0].Value := dmMain.cdsEmps.FieldByName('EmpNo').AsInteger;
+  dmMain.cdsEmpSkill.Open(); //todo: exception
   EmpSkillMode := esEmp;
   SetupEmpSkillsCtrls();
   HideEmpSkillsGridCols();
@@ -201,18 +184,18 @@ end;
 procedure TfrmDBDemo.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 //  Database1.Connected := False;
-  cdsEmps.Close();
-  cdsSkills.Close();
-  cdsEmpSkill.Close();
+  dmMain.cdsEmps.Close();
+  dmMain.cdsSkills.Close();
+  dmMain.cdsEmpSkill.Close();
 end;
 
 procedure TfrmDBDemo.btnSkillEmpsClick(Sender: TObject);
 begin
-  qryEmpSkill.SQL.Clear();
-  cdsEmpSkill.Close();
-  qryEmpSkill.SQL.Add('select es.EmpID, es.SkillID, LastName from EmpSkills es, employee e where (es.SkillID = :sid) and e.EmpNo = es.EmpID');
-  qryEmpSkill.Params[0].Value := cdsSkills.FieldByName('SkillID').Value;
-  cdsEmpSkill.Open();
+  dmMain.qryEmpSkill.SQL.Clear();
+  dmMain.cdsEmpSkill.Close();
+  dmMain.qryEmpSkill.SQL.Add('select es.EmpID, es.SkillID, LastName from EmpSkills es, employee e where (es.SkillID = :sid) and e.EmpNo = es.EmpID');
+  dmMain.qryEmpSkill.Params[0].Value := dmMain.cdsSkills.FieldByName('SkillID').Value;
+  dmMain.cdsEmpSkill.Open();
   EmpSkillMode := esSkill;
   SetupEmpSkillsCtrls();
   HideEmpSkillsGridCols();
@@ -233,23 +216,23 @@ end;
 //	need updt. but it simpler to think about it this way, it just as fast.
 procedure TfrmDBDemo.SetupEmpSkillsCtrls();
 begin
-  btnEmpSkill.Enabled := cdsEmpSkill.Active;
-  btnSkillEmps.Enabled := cdsEmpSkill.Active;
+  btnEmpSkill.Enabled := dmMain.cdsEmpSkill.Active;
+  btnSkillEmps.Enabled := dmMain.cdsEmpSkill.Active;
 
-  btnDelEmpSkill.Enabled := cdsEmpSkill.Active and (cdsEmpSkill.RecordCount > 0);
+  btnDelEmpSkill.Enabled := dmMain.cdsEmpSkill.Active and (dmMain.cdsEmpSkill.RecordCount > 0);
 
   if EmpSkillMode = esEmp then begin
-    btnAddEmpSkill.Enabled := cdsSkills.RecordCount > 0;
+    btnAddEmpSkill.Enabled := dmMain.cdsSkills.RecordCount > 0;
 //todo: bug: qry is showing results for another emp (inconsistent result)
-    lblResult.Caption := cdsEmps.FieldByName('LastName').Value + 'Num Skills: ' +
-    	IntToStr(cdsEmpSkill.RecordCount);
-    gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + cdsEmps.FieldByName('LastName').Value;
+    lblResult.Caption := dmMain.cdsEmps.FieldByName('LastName').Value + 'Num Skills: ' +
+    	IntToStr(dmMain.cdsEmpSkill.RecordCount);
+    gbxUpdtEmpSkill.Caption := 'Skills for Employee: ' + dmMain.cdsEmps.FieldByName('LastName').Value;
   end
   else if EmpSkillMode = esSkill then begin
-    btnAddEmpSkill.Enabled := cdsEmps.RecordCount > 0;
-    lblResult.Caption := cdsSkills.FieldByName('Skill').Value + '  Num Employees: ' +
-      IntToStr(cdsEmpSkill.RecordCount);
-    gbxUpdtEmpSkill.Caption := 'Employees with Skill: ' + cdsSkills.FieldByName('Skill').Value;
+    btnAddEmpSkill.Enabled := dmMain.cdsEmps.RecordCount > 0;
+    lblResult.Caption := dmMain.cdsSkills.FieldByName('Skill').Value + '  Num Employees: ' +
+      IntToStr(dmMain.cdsEmpSkill.RecordCount);
+    gbxUpdtEmpSkill.Caption := 'Employees with Skill: ' + dmMain.cdsSkills.FieldByName('Skill').Value;
   end
   else if EmpSkillMode = esNone then
   begin
@@ -258,7 +241,7 @@ begin
     gbxUpdtEmpSkill.Caption := '';
   end;
 
-  btnEmpSkillsUpdtDB.Enabled := cdsEmpSkill.Active;
+  btnEmpSkillsUpdtDB.Enabled := dmMain.cdsEmpSkill.Active;
 end;
 
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
@@ -268,14 +251,14 @@ var
 
   function SkillExists(): Boolean;
   begin
-    cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';  //todo: dup: need EmpID? must be one emp
-    Result := cdsEmpSkill.FindKey([EmpID, SkillID]);
-    cdsEmpSkill.IndexFieldNames := '';
+    dmMain.cdsEmpSkill.IndexFieldNames := 'EmpID;SkillID';  //todo: dup: need EmpID? must be one emp
+    Result := dmMain.cdsEmpSkill.FindKey([EmpID, SkillID]);
+    dmMain.cdsEmpSkill.IndexFieldNames := '';
   end;
 
 begin
-  EmpID := cdsEmps.FieldByName('EmpNo').AsInteger;  //todo: dup: bug, this is cdsEmps, not qryEmpSkill
-  SkillID := cdsSkills.FieldByName('SkillID').AsInteger;
+  EmpID := dmMain.cdsEmps.FieldByName('EmpNo').AsInteger;  //todo: dup: bug, this is cdsEmps, not qryEmpSkill
+  SkillID := dmMain.cdsSkills.FieldByName('SkillID').AsInteger;
 
   if SkillExists() then begin
     MessageDlg('Employee already has skill', mtError, [mbOk], 0);
@@ -285,19 +268,19 @@ begin
 //ref: this passes by on 2 cases 1) emp > skills, and 2) skill > emps. the 3rd
 //  varies per each case
   try
-    cdsEmpSkill.Insert;
-  	cdsEmpSkill.FieldByName('EmpID').Value := EmpID;
-  	cdsEmpSkill.FieldByName('SkillID').Value := SkillID;
+    dmMain.cdsEmpSkill.Insert;
+  	dmMain.cdsEmpSkill.FieldByName('EmpID').Value := EmpID;
+  	dmMain.cdsEmpSkill.FieldByName('SkillID').Value := SkillID;
 
 		case EmpSkillMode	of
-      esEmp: cdsEmpSkill.FieldByName('Skill').Value := cdsSkills.FieldByName('Skill').Value;
-      esSkill: cdsEmpSkill.FieldByName('LastName').Value := cdsEmps.FieldByName('LastName').Value;
+      esEmp: dmMain.cdsEmpSkill.FieldByName('Skill').Value := dmMain.cdsSkills.FieldByName('Skill').Value;
+      esSkill: dmMain.cdsEmpSkill.FieldByName('LastName').Value := dmMain.cdsEmps.FieldByName('LastName').Value;
     end;
 
-  	cdsEmpSkill.Post;  //todo: dup: can add a rec that does not meet qry?? (incs rec count)
+  	dmMain.cdsEmpSkill.Post;  //todo: dup: can add a rec that does not meet qry?? (incs rec count)
     //todo: dup: bug: shows results for 2 emps(skill dup'd) should be one emp > skills or skill > emps
   except
-    cdsEmpSkill.Cancel();
+    dmMain.cdsEmpSkill.Cancel();
   end;
   SetupEmpSkillsCtrls();
 end;
@@ -313,9 +296,9 @@ procedure TfrmDBDemo.btnEmpSkillsUpdtDBClick(Sender: TObject);
 var
   n: Integer;
 begin
-	if cdsEmpSkill.ChangeCount > 0 then
+	if dmMain.cdsEmpSkill.ChangeCount > 0 then
   begin
-  	n := cdsEmpSkill.ApplyUpdates(0);
+  	n := dmMain.cdsEmpSkill.ApplyUpdates(0);
   end;
 end;
 
@@ -341,7 +324,7 @@ end;
 
 procedure TfrmDBDemo.btnDelEmpSkillClick(Sender: TObject);
 begin
-  cdsEmpSkill.Delete();
+  dmMain.cdsEmpSkill.Delete();
   SetupEmpSkillsCtrls();
 end;
 
@@ -357,16 +340,16 @@ end;
 //  cases are redundant(tbl must be open), but doesnt hurt and keeps it simple
 procedure TfrmDBDemo.SetupSkillCtrls;
 begin
-  btnSkillTblOpen.Enabled := not cdsSkills.Active;
-  btnSkillTblClose.Enabled := cdsSkills.Active;
+  btnSkillTblOpen.Enabled := not dmMain.cdsSkills.Active;
+  btnSkillTblClose.Enabled := dmMain.cdsSkills.Active;
 
-  edtSkillFilter.Enabled := cdsSkills.Active;
+  edtSkillFilter.Enabled := dmMain.cdsSkills.Active;
 	edtSkillFilter.Text := '';
-  btnSkillFilter.Enabled := cdsSkills.Active;
+  btnSkillFilter.Enabled := dmMain.cdsSkills.Active;
 
-	btnSkillUpdtDB.Enabled := cdsSkills.Active;
-  btnSkillAdd.Enabled := cdsSkills.Active;
-  btnSkillDel.Enabled := cdsSkills.Active and (cdsSkills.RecordCount > 0);
+	btnSkillUpdtDB.Enabled := dmMain.cdsSkills.Active;
+  btnSkillAdd.Enabled := dmMain.cdsSkills.Active;
+  btnSkillDel.Enabled := dmMain.cdsSkills.Active and (dmMain.cdsSkills.RecordCount > 0);
   btnSkillUpdt.Enabled := btnSkillDel.Enabled;
 end;
 
@@ -385,28 +368,28 @@ end;
 
 procedure TfrmDBDemo.btnEmpTblCloseClick(Sender: TObject);
 begin
-  cdsEmps.Close();
+  dmMain.cdsEmps.Close();
 	SetupEmpCtrls();
   EmpSkillsTblCtrl();
 end;
 
 procedure TfrmDBDemo.SetupEmpCtrls;
 begin
-	btnEmpTblOpen.Enabled := not cdsEmps.Active;
-  btnEmpTblClose.Enabled := cdsEmps.Active;
+	btnEmpTblOpen.Enabled := not dmMain.cdsEmps.Active;
+  btnEmpTblClose.Enabled := dmMain.cdsEmps.Active;
 	edtEmpFilter.Text := '';
-  btnEmpFilter.Enabled := cdsEmps.Active;
-  edtEmpFilter.Enabled := cdsEmps.Active;
+  btnEmpFilter.Enabled := dmMain.cdsEmps.Active;
+  edtEmpFilter.Enabled := dmMain.cdsEmps.Active;
 end;
 
 procedure TfrmDBDemo.EmpSkillsTblCtrl;
 begin
-  if cdsEmps.Active and cdsSkills.Active then
+  if dmMain.cdsEmps.Active and dmMain.cdsSkills.Active then
   	btnEmpSkill.Click()
   else begin
-  	if cdsEmpSkill.Active then
+  	if dmMain.cdsEmpSkill.Active then
     begin
-    	cdsEmpSkill.Close();
+    	dmMain.cdsEmpSkill.Close();
       EmpSkillMode := esNone;
       SetupEmpSkillsCtrls();
     end;
@@ -415,17 +398,17 @@ end;
 
 procedure TfrmDBDemo.btnSkillFilterClick(Sender: TObject);
 begin
-  cdsSkills.Close(); //must close, for new filter
+  dmMain.cdsSkills.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('skill');
-  cdsSkills.Open();
+  dmMain.cdsSkills.Open();
 end;
 
 procedure TfrmDBDemo.dbgdEmpsTitleClick(Column: TColumn);
 begin
   case Column.Index of
-    0: cdsEmps.IndexFieldNames := 'EmpNo';
-    1: cdsEmps.IndexFieldNames := 'LastName';
-    2: cdsEmps.IndexFieldNames := 'FirstName';
+    0: dmMain.cdsEmps.IndexFieldNames := 'EmpNo';
+    1: dmMain.cdsEmps.IndexFieldNames := 'LastName';
+    2: dmMain.cdsEmps.IndexFieldNames := 'FirstName';
   end;
 end;
 
