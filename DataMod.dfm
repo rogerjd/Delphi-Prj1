@@ -39,6 +39,7 @@ object dmMain: TdmMain
     Aggregates = <>
     Params = <>
     ProviderName = 'dspEmps'
+    OnCalcFields = cdsEmpsCalcFields
     Left = 82
     Top = 56
     object cdsEmpsEmpFullName: TStringField
@@ -119,7 +120,7 @@ object dmMain: TdmMain
     DataSet = qryEmpSkill
     Constraints = True
     UpdateMode = upWhereKeyOnly
-    Left = 48
+    Left = 45
     Top = 168
   end
   object cdsEmpSkill: TClientDataSet
@@ -130,8 +131,8 @@ object dmMain: TdmMain
     PacketRecords = 0
     Params = <>
     ProviderName = 'dspEmpSkill'
-    Left = 160
-    Top = 56
+    Left = 82
+    Top = 168
     object cdsEmpSkillEmpID: TIntegerField
       FieldName = 'EmpID'
     end
@@ -154,7 +155,7 @@ object dmMain: TdmMain
   end
   object dsEmpSkill: TDataSource
     DataSet = cdsEmpSkill
-    Left = 200
-    Top = 56
+    Left = 120
+    Top = 168
   end
 end

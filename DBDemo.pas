@@ -55,6 +55,7 @@ type
     DBLookupComboBox1: TDBLookupComboBox;
     DBLookupListBox1: TDBLookupListBox;
     tblEmps: TTable;
+    btnEmpPers: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure btnEmpTblOpenClick(Sender: TObject);
@@ -83,7 +84,7 @@ type
       E: EReconcileError; UpdateKind: TUpdateKind;
       var Action: TReconcileAction);
     procedure btnExceptClick(Sender: TObject);
-    procedure cdsEmpsCalcFields(DataSet: TDataSet);
+    procedure btnEmpPersClick(Sender: TObject);
   private
     EmpSkillMode: TEmpSkill;
     { Private declarations }
@@ -105,7 +106,7 @@ var
 implementation
 
 uses
-  DataMod;
+  DataMod, EmpPersonal;
 
 {$R *.dfm}
 
@@ -442,11 +443,14 @@ begin
   tblEmps.Close();
 end;
 
-procedure TfrmDBDemo.cdsEmpsCalcFields(DataSet: TDataSet);
+procedure TfrmDBDemo.btnEmpPersClick(Sender: TObject);
 begin
-  DataSet.FieldByName('EmpFullName').Value :=
-  	DataSet.fieldbyName('FirstName').Value + ' ' +
-  	DataSet.fieldbyName('LastName').Value;
+  frmEmpPers := TfrmEmpPers.Create(nil);
+  try
+		frmEmpPers.ShowModal();
+  finally
+		frmEmpPers.Free();
+  end;
 end;
 
 end.

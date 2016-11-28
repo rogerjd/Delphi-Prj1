@@ -22,6 +22,7 @@ object frmDBDemo: TfrmDBDemo
     Height = 13
     AutoSize = True
     DataField = 'EmpFullName'
+    DataSource = dmMain.dsEmps
   end
   object dbgdEmps: TDBGrid
     Left = 8
@@ -45,12 +46,12 @@ object frmDBDemo: TfrmDBDemo
       item
         Expanded = False
         FieldName = 'LastName'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'FirstName'
+        Width = 64
         Visible = True
       end>
   end
@@ -343,6 +344,15 @@ object frmDBDemo: TfrmDBDemo
     ListField = 'Skill'
     ListSource = dmMain.dsSkills
     TabOrder = 13
+  end
+  object btnEmpPers: TButton
+    Left = 40
+    Top = 360
+    Width = 75
+    Height = 25
+    Caption = 'Edit Personal'
+    TabOrder = 14
+    OnClick = btnEmpPersClick
   end
   object Table1: TTable
     DatabaseName = 'Database1'

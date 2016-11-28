@@ -31,6 +31,7 @@ type
     cdsEmpSkillSkillLevel: TStringField;
     cdsEmpSkillSkill: TStringField;
     dsEmpSkill: TDataSource;
+    procedure cdsEmpsCalcFields(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -43,5 +44,12 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TdmMain.cdsEmpsCalcFields(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('EmpFullName').Value :=
+  	DataSet.fieldbyName('FirstName').Value + ' ' +
+  	DataSet.fieldbyName('LastName').Value;
+end;
 
 end.
