@@ -4,12 +4,14 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, DBCtrls;
+  Dialogs, StdCtrls, DBCtrls, Buttons, Mask;
 
 type
   TfrmEmpPers = class(TForm)
     DBText1: TDBText;
     Button1: TButton;
+    btnClose: TBitBtn;
+    DBEdit1: TDBEdit;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
