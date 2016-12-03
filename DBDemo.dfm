@@ -51,6 +51,7 @@ object frmDBDemo: TfrmDBDemo
       item
         Expanded = False
         FieldName = 'FirstName'
+        Width = 64
         Visible = True
       end>
   end

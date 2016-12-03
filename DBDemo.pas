@@ -140,6 +140,7 @@ end;
 
 procedure TfrmDBDemo.btnEmpFilterClick(Sender: TObject);
 begin
+//todo: filter cds not qry? SetRange on current index field
   dmMain.cdsEmps.Close(); //must close, for new filter
   SetEmpSkillsQryFilter('emp');
   dmMain.cdsEmps.Open();
