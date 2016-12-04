@@ -89,6 +89,9 @@ type
     EmpSkillMode: TEmpSkill;
     { Private declarations }
     procedure SetEmpSkillsQryFilter(tbl: string);
+
+		//todo: naming: UI_Updt() ?
+    //              DB_Qry??
     procedure SetupEmpSkillsCtrls();
     procedure HideEmpSkillsGridCols();
 
@@ -96,6 +99,7 @@ type
     procedure SetupEmpCtrls;
 
     procedure EmpSkillsTblCtrl();
+    procedure cdsEmpsFilterRecord(DataSet: TDataSet; var Accept: Boolean);
   public
     { Public declarations }
   end;
@@ -142,7 +146,11 @@ procedure TfrmDBDemo.btnEmpFilterClick(Sender: TObject);
 begin
 //todo: filter cds not qry? SetRange on current index field
   dmMain.cdsEmps.Close(); //must close, for new filter
-  SetEmpSkillsQryFilter('emp');
+
+//  SetEmpSkillsQryFilter('emp');
+//  dmMain.cdsEmps.OnFilterRecord :=
+  dmMain.cdsEmps.Filter := dmMain.cdsEmps.IndexFieldNames + ' LIKE ' + QuotedStr(edtEmpFilter.Text + '%');
+  dmMain.cdsEmps.Filtered := True;
   dmMain.cdsEmps.Open();
 (*
   ShowMessage(BoolToStr(Query1.Active));
@@ -204,6 +212,8 @@ begin
 end;
 
 procedure TfrmDBDemo.FormCreate(Sender: TObject);
+var
+  col: TColumn;
 begin
 (*
   SetEmpSkillsQryFilter('emp');
@@ -211,6 +221,11 @@ begin
 *)
   btnEmpTblOpen.Click();
   btnSkillTblOpen.Click();
+
+  //todo: index order test
+//  col := TColumn.Create(nil);
+//  col.Index := 1;
+
 //  cdsSkills.Open();
 end;
 
@@ -243,7 +258,7 @@ begin
     gbxUpdtEmpSkill.Caption := '';
   end;
 
-  btnEmpSkillsUpdtDB.Enabled := dmMain.cdsEmpSkill.Active;
+  btnEmpSkillsUpdtDB.Enabled := dmMain.cdsEmpSkill.Active;   //todo: and ChangeCount > 0 ?
 end;
 
 procedure TfrmDBDemo.btnAddEmpSkillClick(Sender: TObject);
@@ -452,6 +467,14 @@ begin
   finally
 		frmEmpPers.Free();
   end;
+end;
+
+procedure TfrmDBDemo.cdsEmpsFilterRecord(DataSet: TDataSet;
+  var Accept: Boolean);
+var
+  txt: String;
+begin
+//  Accept := Pos('c', )
 end;
 
 end.
