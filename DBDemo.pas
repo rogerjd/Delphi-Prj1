@@ -225,6 +225,7 @@ begin
   //todo: index order test
 //  col := TColumn.Create(nil);
 //  col.Index := 1;
+  dbgdEmpsTitleClick(dbgdEmps.Columns[1]);
 
 //  cdsSkills.Open();
 end;
