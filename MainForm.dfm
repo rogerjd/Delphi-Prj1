@@ -38,6 +38,10 @@ object frmMain: TfrmMain
         Caption = 'Interface'
         OnClick = Interface1Click
       end
+      object miInherit: TMenuItem
+        Caption = 'Inherit'
+        OnClick = miInheritClick
+      end
       object miStrFuncs: TMenuItem
         Caption = '&String Funcs'
         OnClick = miStrFuncsClick

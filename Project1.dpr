@@ -15,7 +15,8 @@ uses
   FrameTst in 'FrameTst.pas' {Frame1: TFrame},
   EmpSkill in 'EmpSkill.pas' {frmEmpSkill},
   EmpPersonal in 'EmpPersonal.pas' {frmEmpPers},
-  DataMod in 'DataMod.pas' {dmMain: TDataModule};
+  DataMod in 'DataMod.pas' {dmMain: TDataModule},
+  Inherit in 'Inherit.pas' {frmInherit};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TdmMain, dmMain);
+  Application.CreateForm(TfrmInherit, frmInherit);
   Application.Run;
 end.
